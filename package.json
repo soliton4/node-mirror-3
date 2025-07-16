@@ -1,0 +1,17 @@
+{
+  "name": "web-ide",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node backend/index.js",
+    "build": "cd frontend && npm run build",
+    "start": "npm run build && node backend/index.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.19.0",
+    "minimist": "^1.2.8",
+    "uuid": "^11.1.0",
+    "ws": "^8.16.0"
+  }
+}
