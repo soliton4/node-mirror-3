@@ -162,6 +162,10 @@ npm run dev
 - [ ] Editable config panel in frontend (respects `readOnly`)
 - [ ] Optional plugin loader (e.g. Vim bindings, themes)
 
+## AI App Development Experiment
+
+I am using this project as an experiment in AI-based development. The first commit was created almost entirely with help of this [ChatGPT interaction](https://chatgpt.com/share/6878426f-5e0c-8013-8ea2-3a39aa910a91).
+
 ## License
 
 This project is licensed under a modified BSD 3-Clause License.
