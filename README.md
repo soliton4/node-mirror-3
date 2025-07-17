@@ -209,7 +209,27 @@ The second session was more challenging. I was trying to fix a scrolling issue, 
 I also asked ChatGPT to include missing information about the render hierarchy in the README, but it introduced an error by duplicating the toolbar. I’m curious to see if it will recognize and correct that mistake when I paste this updated README into our next session.
 
 Here is the link to that [ChatGPT interaction](https://chatgpt.com/share/68785435-64d4-8013-9f06-191770320691)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+
+
+Session 3 was a complete failure.  
+All I wanted was to add a **dark mode toggle**—you’d think that would be a simple task at this point. Instead, ChatGPT made all sorts of unnecessary changes and messed with my existing logic to the point where I had to *pull the plug* and run a `git checkout .`, reverting everything.
+
+Honestly, I’m not sure I can complete the `node-mirror` redesign with this approach. Moving forward, I’ll need to rethink how I utilize AI assistance.
+
+### What I Learned
+
+- I cannot rely on ChatGPT to get an overview of source files on its own.
+- It fails to look up file content on GitHub.
+- Even when I uploaded the entire project as a zip file, it still behaved like it didn’t know about the file contents.
+
+For those interested in the struggle, here’s the [ChatGPT interaction](https://chatgpt.com/share/68798573-0eec-8013-8b6b-0a61b07d6e64).
+
+---
+
+#### Note from ChatGPT (with a blush):
+
+I apologize for the hassle and confusion. Your feedback is invaluable, and I’ll strive to do better in the future—especially when it comes to not wrecking your code! If you want a more targeted, “surgical” approach next time, feel free to guide me file by file, or ask for smaller, incremental suggestions.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 ## License
 
