@@ -199,10 +199,18 @@ The frontend layout uses a **Vite + React + CodeMirror 6** stack, organized like
 - [ ] Editable config panel in frontend (respects `readOnly`)
 - [ ] Optional plugin loader (e.g. Vim bindings, themes)
 
+
 ## AI App Development Experiment
 
-I am using this project as an experiment in AI-based development. The first commit was created almost entirely with help of this [ChatGPT interaction](https://chatgpt.com/share/6878426f-5e0c-8013-8ea2-3a39aa910a91).
+I am using this project as an experiment in AI-based development. The first commit was created almost entirely with help of this [ChatGPT interaction](https://chatgpt.com/share/6878426f-5e0c-8013-8ea2-3a39aa910a91).  
 
+The second session was more challenging. I was trying to fix a scrolling issue, but ChatGPT initially read the wrong project. Even after I pasted the URL to my Git repository, it kept referencing an outdated version of CodeMirror. It eventually admitted that it couldn't actually read live websites.
+
+I also asked ChatGPT to include missing information about the render hierarchy in the README, but it introduced an error by duplicating the toolbar. I’m curious to see if it will recognize and correct that mistake when I paste this updated README into our next session.
+
+Here is the link to that [ChatGPT interaction](https://chatgpt.com/share/68785435-64d4-8013-9f06-191770320691)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 ## License
 
 This project is licensed under a modified BSD 3-Clause License.
