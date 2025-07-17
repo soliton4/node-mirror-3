@@ -4,6 +4,18 @@ import {EditorState} from "@codemirror/state"
 import {EditorView} from "@codemirror/view"
 import { javascript } from '@codemirror/lang-javascript';
 
+const fullHeightTheme = EditorView.theme({
+  "&": {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column"
+  },
+  ".cm-scroller": {
+    flex: 1,
+    overflow: "auto"
+  }
+});
+
 export default function CodeMirrorEditor({ file, value, onChange, onSave }) {
   const wrapperRef = useRef(null);
   const viewRef    = useRef(null);
@@ -19,7 +31,7 @@ export default function CodeMirrorEditor({ file, value, onChange, onSave }) {
 
     const state = EditorState.create({
       doc: value,
-      extensions: [basicSetup, javascript(), updateListener]
+      extensions: [basicSetup, javascript(), updateListener, fullHeightTheme]
     });
 
     viewRef.current = new EditorView({

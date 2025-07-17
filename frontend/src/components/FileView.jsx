@@ -45,7 +45,7 @@ export default function FileView({ path }) {
       </div>
 
       {/* ---- editor area ---- */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, minHeight: 0 }}>
         {mode === 'text' && (
           <CodeMirrorEditor file={fileObj} value={buffer} onChange={updateBuffer} onSave={saveFile} />
         )}

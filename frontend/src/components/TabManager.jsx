@@ -29,7 +29,7 @@ export default function TabManager() {
       </div>
 
       {/* ---- content ---- */}
-      <div style={{ flex: 1, overflow: 'auto' }}>
+      <div style={{ flex: 1, minHeight: 0 }}>
         {activeTab
           ? <FileView key={activeTab} path={activeTab} />
           : <em style={{ padding: 16 }}>No file selected</em>}

@@ -141,6 +141,43 @@ cd frontend
 npm run dev
 ```
 
+## 🧱 UI Layout Structure (Frontend)
+
+The frontend layout uses a **Vite + React + CodeMirror 6** stack, organized like this:
+
+```
+<App>
+ └── <VerticalSplitter>                     // left/right pane layout
+      ├── Left: <FileTree />                // sidebar file explorer
+      └── Right: <TabManager>               // manages open file tabs
+            ├── Tab bar (fixed height)
+            └── <FileView>                  // editor container
+                 ├── Toolbar (fixed height)
+                 └── <CodeMirrorEditor />   // fills remaining space, scrolls internally
+```
+
+### Key Layout Behaviors
+
+- The entire layout is anchored to `100vh` via global CSS (`html`, `body`, `#root`)
+- `TabManager` is a flex column:
+  - Fixed-height tab bar on top
+  - `FileView` as `flex: 1; min-height: 0`
+- `FileView` is also a flex column:
+  - Toolbar (`flex: 0 0 auto`)
+  - Editor wrapper (`flex: 1; min-height: 0`)
+- `CodeMirrorEditor` uses a `fullHeightTheme`:
+  - `EditorView` has `height: 100%`
+  - `.cm-scroller` is `flex: 1` with `overflow: auto`
+
+### Related Files
+
+- `frontend/src/components/TabManager.jsx`
+- `frontend/src/components/FileView.jsx`
+- `frontend/src/components/editors/CodeMirrorEditor.jsx`
+- `frontend/src/global.css` (global height + layout rules)
+
+
+
 ## Security Notes
 
 - Simple password authentication via WebSocket

@@ -1,0 +1,41 @@
+/* global.css */
+
+/* Ensure root layout is locked to viewport size */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Flex layout for sidebar + content */
+body > div, #root > div {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+/* Optional: apply box-sizing globally */
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden; /* Don't let this scroll */
+}
+
+.toolbar {
+  flex: 0 0 auto;
+  height: 40px; /* Or whatever your toolbar height is */
+  border-bottom: 1px solid #ccc;
+}
+
+.editor-container {
+  flex: 1 1 auto;
+  overflow: auto;
+  min-height: 0; /* ✨ required for flex children to shrink properly */
+}
