@@ -2,10 +2,50 @@ import React, { useState, useEffect } from 'react';
 import openFile from '../../../shared/objects/File';
 import CodeMirrorEditor from './editors/CodeMirrorEditor';
 import HexEditor from './editors/HexEditor';
+import { useGlobal } from '../GlobalContext';
 
 import { Save, RefreshCw } from 'lucide-react';
 
 export default function FileView({ path }) {
+
+
+  const { state } = useGlobal();
+  const darkMode = state.config.darkMode;
+
+  const containerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    background: darkMode ? '#1e1e1e' : '#fff',
+    color: darkMode ? '#eee' : '#000',
+  };
+
+  const toolbarStyle = {
+    background: darkMode ? '#2c2c2c' : '#f7f7f7',
+    borderBottom: darkMode ? '1px solid #444' : '1px solid #ccc',
+    padding: '4px 8px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  };
+
+  const iconButtonStyle = {
+    background: 'none',
+    border: 'none',
+    padding: '4px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    color: darkMode ? '#eee' : '#000',
+  };
+
+  const selectStyle = {
+    background: darkMode ? '#444' : '#fff',
+    color: darkMode ? '#eee' : '#000',
+    border: '1px solid #888',
+    padding: '2px 6px',
+  };
+  
   const fileObj = openFile(path);
   const [mode, setMode] = useState('text');
   const [buffer, setBuffer] = useState('');
@@ -25,23 +65,20 @@ export default function FileView({ path }) {
   };
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div style={containerStyle}>
       {/* ---- control bar ---- */}
-      <div style={{
-        background: '#f7f7f7',
-        borderBottom: '1px solid #ccc',
-        padding: '4px 8px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px'
-      }}>
-        <select value={mode} onChange={e => setMode(e.target.value)}>
+      <div style={toolbarStyle}>
+        <select style={selectStyle} value={mode} onChange={e => setMode(e.target.value)}>
           <option value="text">Text editor</option>
           <option value="hex">Hex editor</option>
         </select>
 
-        <button onClick={saveFile} title="Save" style={iconButtonStyle}><Save size={18} /></button>
-        <button onClick={reloadFile} title="Reload" style={iconButtonStyle}><RefreshCw size={18} /></button>
+        <button onClick={saveFile} title="Save" style={iconButtonStyle}>
+          <Save size={18} />
+        </button>
+        <button onClick={reloadFile} title="Reload" style={iconButtonStyle}>
+          <RefreshCw size={18} />
+        </button>
       </div>
 
       {/* ---- editor area ---- */}
@@ -57,11 +94,4 @@ export default function FileView({ path }) {
   );
 }
 
-const iconButtonStyle = {
-  background: 'none',
-  border: 'none',
-  padding: '4px',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center'
-};
+

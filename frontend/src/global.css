@@ -1,6 +1,9 @@
 /* global.css */
 
-/* Ensure root layout is locked to viewport size */
+/* -----------------------
+   Base Layout + Structure
+-------------------------- */
+
 html, body, #root {
   margin: 0;
   padding: 0;
@@ -10,32 +13,111 @@ html, body, #root {
 }
 
 /* Flex layout for sidebar + content */
-body > div, #root > div {
+body > div,
+#root > div {
   display: flex;
   height: 100%;
   width: 100%;
 }
 
-/* Optional: apply box-sizing globally */
+/* Box-sizing reset */
 *, *::before, *::after {
   box-sizing: inherit;
 }
+
+/* -----------------------
+   Editor Pane
+-------------------------- */
 
 .editor-pane {
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden; /* Don't let this scroll */
-}
-
-.toolbar {
-  flex: 0 0 auto;
-  height: 40px; /* Or whatever your toolbar height is */
-  border-bottom: 1px solid #ccc;
+  overflow: hidden;
 }
 
 .editor-container {
   flex: 1 1 auto;
   overflow: auto;
-  min-height: 0; /* ✨ required for flex children to shrink properly */
+  min-height: 0;
+}
+
+/* -----------------------
+   Toolbar
+-------------------------- */
+
+.toolbar {
+  flex: 0 0 auto;
+  height: 40px;
+  border-bottom: 1px solid #ccc;
+  background-color: #f3f3f3;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+}
+
+/* -----------------------
+   Split View Styling
+-------------------------- */
+
+.split-left {
+  background-color: #f0f0f0;
+}
+
+.split-right {
+  background-color: #ffffff;
+}
+
+.split-divider {
+  background-color: #ccc;
+}
+
+/* -----------------------
+   Dark Mode Styling
+-------------------------- */
+
+body.dark-mode {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+body.dark-mode .split-left {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode .split-right {
+  background-color: #121212;
+}
+
+body.dark-mode .split-divider {
+  background-color: #333;
+}
+
+body.dark-mode .editor-pane,
+body.dark-mode .editor-container {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode .toolbar {
+  background-color: #2c2c2c;
+  border-bottom: 1px solid #444;
+}
+
+body.dark-mode button {
+  background-color: #444;
+  color: #fff;
+  border: none;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background-color: #333;
+  color: #fff;
+  border-color: #555;
+}
+
+body.dark-mode ::selection {
+  background: #555;
+  color: #fff;
 }

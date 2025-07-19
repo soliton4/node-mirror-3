@@ -1,3 +1,5 @@
+// frontend/src/VerticalSplitter.jsx
+
 import React, { useState, useRef, useEffect } from 'react';
 
 export default function VerticalSplitter({ left, right }) {
@@ -33,24 +35,22 @@ export default function VerticalSplitter({ left, right }) {
   return (
     <div
       ref={containerRef}
+      className="split-container"
       style={{
         display: 'flex',
         height: '100vh',
         userSelect: dragging ? 'none' : 'auto',
       }}
     >
-      <div style={{ width: dividerX, backgroundColor: '#f0f0f0', overflow: 'auto' }}>
+      <div className="split-left" style={{ width: dividerX, overflow: 'auto' }}>
         {left}
       </div>
       <div
-        style={{
-          width: 5,
-          cursor: 'col-resize',
-          backgroundColor: '#ccc',
-        }}
+        className="split-divider"
+        style={{ width: 5, cursor: 'col-resize' }}
         onMouseDown={() => setDragging(true)}
       />
-      <div style={{ flex: 1, backgroundColor: '#fff', overflow: 'auto' }}>
+      <div className="split-right" style={{ flex: 1, overflow: 'auto' }}>
         {right}
       </div>
     </div>

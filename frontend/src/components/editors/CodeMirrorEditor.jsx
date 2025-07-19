@@ -1,26 +1,31 @@
 import React, { useEffect, useRef } from 'react';
-import {basicSetup} from "codemirror"
-import {EditorState} from "@codemirror/state"
-import {EditorView} from "@codemirror/view"
+import { basicSetup } from 'codemirror';
+import { EditorState } from '@codemirror/state';
+import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
+import { oneDark } from '@codemirror/theme-one-dark'; // Dark theme
+import { useGlobal } from '../../GlobalContext';
 
 const fullHeightTheme = EditorView.theme({
   "&": {
     height: "100%",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   ".cm-scroller": {
     flex: 1,
-    overflow: "auto"
+    overflow: "auto",
   }
 });
 
 export default function CodeMirrorEditor({ file, value, onChange, onSave }) {
   const wrapperRef = useRef(null);
-  const viewRef    = useRef(null);
+  const viewRef = useRef(null);
 
-  /* Initial mount */
+  const { state } = useGlobal();
+  const darkMode = state.config.darkMode;
+
+  // Initial mount
   useEffect(() => {
     const updateListener = EditorView.updateListener.of((update) => {
       if (update.docChanged) {
@@ -29,16 +34,21 @@ export default function CodeMirrorEditor({ file, value, onChange, onSave }) {
       }
     });
 
-    const state = EditorState.create({
+    const editorState = EditorState.create({
       doc: value,
-      extensions: [basicSetup, javascript(), updateListener, fullHeightTheme]
+      extensions: [
+        basicSetup,
+        javascript(),
+        updateListener,
+        fullHeightTheme,
+        darkMode ? oneDark : EditorView.theme({}, { dark: false })
+      ]
     });
 
     viewRef.current = new EditorView({
-      state,
-      parent: wrapperRef.current
+      state: editorState,
+      parent: wrapperRef.current,
     });
-
 
     const saveKey = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === 's') {
@@ -52,16 +62,13 @@ export default function CodeMirrorEditor({ file, value, onChange, onSave }) {
       viewRef.current?.destroy();
       document.removeEventListener('keydown', saveKey);
     };
-  }, [file]);
+  }, [file, darkMode]);
 
-  /* External updates to value (buffer change elsewhere) */
+  // External updates to value
   useEffect(() => {
-    console.log("value:" + value);
     if (!viewRef.current) return;
 
     const current = viewRef.current.state.doc.toString();
-
-    // Only update editor content if external change occurred
     if (current !== value) {
       viewRef.current.dispatch({
         changes: { from: 0, to: current.length, insert: value }
@@ -69,5 +76,5 @@ export default function CodeMirrorEditor({ file, value, onChange, onSave }) {
     }
   }, [value]);
 
-  return <div ref={wrapperRef} style={{height:'100%'}} />;
+  return <div ref={wrapperRef} style={{ height: '100%' }} />;
 }
