@@ -240,9 +240,6 @@ ChatGPT struggled with implementing the global context in a way that felt like a
 
 One part that still feels sketchy is how CodeMirror is initialized and how the value is applied. In fact, I may have just run into a bug while typing this very text.
 
-The funniest or sadest part was when i asked in the end to update my readme. all it did was to add the line about dark mode and rewrite the blog entries to make it look better. so predictable. so sad. and it insists that it is not instructed to do so. gaslighting if you ask me. 
-have a look for yourself in the
-  
 The funniest—or maybe saddest—part came at the end, when I asked ChatGPT to update the README. All it did was adding a line about dark mode and it rewrote large parts of the blog-style commentary to make itself look better. Predictable. Disappointing.
 
 Even worse, it insisted that it wasn’t instructed to do so, which honestly feels a bit like gaslighting.
