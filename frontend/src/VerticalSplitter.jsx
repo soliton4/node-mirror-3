@@ -38,11 +38,12 @@ export default function VerticalSplitter({ left, right }) {
       className="split-container"
       style={{
         display: 'flex',
-        height: '100vh',
+        height: '100%',
         userSelect: dragging ? 'none' : 'auto',
+        position: 'relative',
       }}
-    >
-      <div className="split-left" style={{ width: dividerX, overflow: 'auto' }}>
+      >
+      <div className="split-left" style={{ width: dividerX, minHeight: 0 }}>
         {left}
       </div>
       <div
@@ -50,7 +51,12 @@ export default function VerticalSplitter({ left, right }) {
         style={{ width: 5, cursor: 'col-resize' }}
         onMouseDown={() => setDragging(true)}
       />
-      <div className="split-right" style={{ flex: 1, overflow: 'auto' }}>
+      <div className="split-right" style={{
+        flex: 1,
+        minHeight: 0,
+        minWidth: 0,        // ← THIS IS CRITICAL
+        overflow: "hidden",   // ← Prevent content from pushing beyond
+      }}>
         {right}
       </div>
     </div>

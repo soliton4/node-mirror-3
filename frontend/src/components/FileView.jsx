@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import openFile from '../../../shared/objects/File';
+import ReactCodeMirrorEditor from './editors/ReactCodeMirrorEditor';
 import CodeMirrorEditor from './editors/CodeMirrorEditor';
 import HexEditor from './editors/HexEditor';
 import { useGlobal } from '../GlobalContext';
 
 import { Save, RefreshCw } from 'lucide-react';
 
-export default function FileView({ path }) {
-
+export default function FileView({ id }) {
 
   const { state } = useGlobal();
   const darkMode = state.config.darkMode;
@@ -45,9 +45,15 @@ export default function FileView({ path }) {
     border: '1px solid #888',
     padding: '2px 6px',
   };
+
   
-  const fileObj = openFile(path);
-  const [mode, setMode] = useState('text');
+  const fileExtension = id ? id.split('.').pop().toLowerCase() : "";
+
+  const [toolbarExtras, setToolbarExtras] = useState(null);
+
+  
+  const fileObj = openFile(id);
+  const [mode, setMode] = useState('react-codemirror');
   const [buffer, setBuffer] = useState('');
 
   useEffect(() => {
@@ -69,7 +75,8 @@ export default function FileView({ path }) {
       {/* ---- control bar ---- */}
       <div style={toolbarStyle}>
         <select style={selectStyle} value={mode} onChange={e => setMode(e.target.value)}>
-          <option value="text">Text editor</option>
+          <option value="codemirror">CodeMirror</option>
+          <option value="react-codemirror">ReactCodeMirror</option>
           <option value="hex">Hex editor</option>
         </select>
 
@@ -79,15 +86,31 @@ export default function FileView({ path }) {
         <button onClick={reloadFile} title="Reload" style={iconButtonStyle}>
           <RefreshCw size={18} />
         </button>
+
+        {/* 🔌 Slot for additional toolbar controls */}
+        {toolbarExtras}
       </div>
 
       {/* ---- editor area ---- */}
-      <div style={{ flex: 1, minHeight: 0 }}>
-        {mode === 'text' && (
-          <CodeMirrorEditor file={fileObj} value={buffer} onChange={updateBuffer} onSave={saveFile} />
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        minHeight: 0, // ← this is the key
+      }}>
+        {mode === 'codemirror' && (
+          <CodeMirrorEditor value={buffer} onChange={updateBuffer} fileExtension={fileExtension} />
+        )}
+        {mode === 'react-codemirror' && (
+          <ReactCodeMirrorEditor 
+            valuePar={buffer} 
+            onChangePar={updateBuffer} 
+            fileExtension={fileExtension} 
+            setToolbarExtras={setToolbarExtras}
+            />
         )}
         {mode === 'hex' && (
-          <HexEditor value={buffer} onChange={updateBuffer} onSave={saveFile} />
+          <HexEditor value={buffer} onChange={updateBuffer} />
         )}
       </div>
     </div>

@@ -18,7 +18,7 @@ const fullHeightTheme = EditorView.theme({
   }
 });
 
-export default function CodeMirrorEditor({ file, value, onChange, onSave }) {
+export default function CodeMirrorEditor({ value, onChange, onSave }) {
   const wrapperRef = useRef(null);
   const viewRef = useRef(null);
 
@@ -62,7 +62,7 @@ export default function CodeMirrorEditor({ file, value, onChange, onSave }) {
       viewRef.current?.destroy();
       document.removeEventListener('keydown', saveKey);
     };
-  }, [file, darkMode]);
+  }, [darkMode]);
 
   // External updates to value
   useEffect(() => {

@@ -21,7 +21,7 @@ export default function FileTree({ }) {
   }, []);
 
   return (
-    <div>
+    <div style={{ userSelect: 'none' }}>
       <FileTreeToolbar />
       {files.map((file) => (
         <FileNode

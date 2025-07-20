@@ -14,10 +14,10 @@ export default function TabManager() {
     borderBottom: '1px solid #444',
   };
 
-  const tabStyle = (path) => ({
+  const tabStyle = (id) => ({
     padding: '4px 8px',
     cursor: 'pointer',
-    background: activeTab === path
+    background: activeTab === id
       ? (darkMode ? '#1e1e1e' : '#fff')
       : (darkMode ? '#3a3a3a' : '#ddd'),
     border: '1px solid #555',
@@ -29,14 +29,14 @@ export default function TabManager() {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* ---- tab header ---- */}
       <div style={tabHeaderStyle}>
-        {openTabs.map(path => (
-          <div key={path}
-               onClick={() => openFile(path)}
-               style={tabStyle(path)}>
-            {path.split('/').pop()}
+        {openTabs.map(id => (
+          <div key={id}
+               onClick={() => openFile(id)}
+               style={tabStyle(id)}>
+            {id.split('/').pop()}
             <span onClick={(e) => {
               e.stopPropagation();
-              closeTab(path);
+              closeTab(id);
             }} style={{ marginLeft: 4 }}>×</span>
           </div>
         ))}
@@ -45,7 +45,7 @@ export default function TabManager() {
       {/* ---- content ---- */}
       <div style={{ flex: 1, minHeight: 0 }}>
         {activeTab
-          ? <FileView key={activeTab} path={activeTab} />
+          ? <FileView key={activeTab} id={activeTab} />
           : <em style={{ padding: 16 }}>No file selected</em>}
       </div>
     </div>
