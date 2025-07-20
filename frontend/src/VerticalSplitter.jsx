@@ -43,7 +43,12 @@ export default function VerticalSplitter({ left, right }) {
         position: 'relative',
       }}
       >
-      <div className="split-left" style={{ width: dividerX, minHeight: 0 }}>
+      <div className="split-left" style={{
+        width: dividerX,
+        minHeight: 0,
+        overflow: 'auto',     // ✅ Enables scrolling
+        height: '100%',       // ✅ Ensures it fills the container
+      }}>
         {left}
       </div>
       <div

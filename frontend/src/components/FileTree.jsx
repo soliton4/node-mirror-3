@@ -1,6 +1,6 @@
 // frontend/src/components/FileTree.jsx
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Dir from '../../../shared/objects/Dir.js';
 import FileNode from './FileNode';
 import FileTreeToolbar from './FileTreeToolbar';
@@ -10,6 +10,7 @@ import FileTreeToolbar from './FileTreeToolbar';
 export default function FileTree({ }) {
   const [files, setFiles] = useState([]);
 
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     const loadRoot = async () => {
@@ -21,7 +22,7 @@ export default function FileTree({ }) {
   }, []);
 
   return (
-    <div style={{ userSelect: 'none' }}>
+    <div ref={scrollContainerRef} style={{ userSelect: 'none' }}>
       <FileTreeToolbar />
       {files.map((file) => (
         <FileNode
@@ -31,6 +32,7 @@ export default function FileTree({ }) {
           isDirectory={file.isDirectory}
           level={0}
           dir={Dir('/')}
+          scrollContainerRef={scrollContainerRef}
         />
       ))}
     </div>
