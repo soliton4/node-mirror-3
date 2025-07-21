@@ -46,8 +46,9 @@ export default function VerticalSplitter({ left, right }) {
       <div className="split-left" style={{
         width: dividerX,
         minHeight: 0,
-        overflow: 'auto',     // ✅ Enables scrolling
-        height: '100%',       // ✅ Ensures it fills the container
+        minWidth: 0,  
+        overflow: 'hidden',     
+        height: '100%',       
       }}>
         {left}
       </div>
@@ -59,8 +60,8 @@ export default function VerticalSplitter({ left, right }) {
       <div className="split-right" style={{
         flex: 1,
         minHeight: 0,
-        minWidth: 0,        // ← THIS IS CRITICAL
-        overflow: "hidden",   // ← Prevent content from pushing beyond
+        minWidth: 0,  
+        overflow: "hidden",  
       }}>
         {right}
       </div>

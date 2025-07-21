@@ -22,19 +22,33 @@ export default function FileTree({ }) {
   }, []);
 
   return (
-    <div ref={scrollContainerRef} style={{ userSelect: 'none' }}>
+    <div 
+      style={{ 
+        userSelect: 'none',  
+        overflow: "hidden",
+        height: "100%",
+      }}
+      >
       <FileTreeToolbar />
-      {files.map((file) => (
-        <FileNode
-          key={file.name}
-          path="/"
-          name={file.name}
-          isDirectory={file.isDirectory}
-          level={0}
-          dir={Dir('/')}
-          scrollContainerRef={scrollContainerRef}
-        />
-      ))}
+      <div
+        ref={scrollContainerRef} 
+        style={{ 
+          userSelect: 'none',  
+          overflowX: "hidden",
+          overflowY: "auto",
+          height: "100%",
+        }}
+        >
+          <FileNode
+            key={"/"}
+            path={"/"}
+            name={"/"}
+            isDirectory={true}
+            level={0}
+            dir={Dir('/')}
+            scrollContainerRef={scrollContainerRef}
+          />
+      </div>
     </div>
   );
 }
