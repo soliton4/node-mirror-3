@@ -39,11 +39,14 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
       const dir = Dir(id);
       let cancelled = false;
 
+
       const fetch = async () => {
         const c = await dir.children();
         if (!cancelled) setChildren(c);
       };
       fetch();
+      
+      dir.on("change", fetch);
 
       return () => {
         cancelled = true;
@@ -158,6 +161,7 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
       )}
       {expanded && children.map(child => (
         <FileNode
+          key={`${id === "/" ? "/" : id + "/"}${child.name}`}
           name={child.name}
           id={`${id === "/" ? "/" : id + "/"}${child.name}`}
           isDirectory={child.isDirectory}

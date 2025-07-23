@@ -46,10 +46,71 @@ class Factory {
     }
   }
 
-  getOrCreate(objectType, id, remoteConnection) {
+  create(objectType, id, definition){
+
+    const ctor = definition.constructor;
+    if (!ctor) throw new Error(`Constructor not registered for type "${objectType}"`);
+    const obj = ctor(id);
     const key = keyFromIds(objectType, id);
+
+    let broadcastEvents = {};
+    let hasBroadcastEvents = false;
+    const prepareEvents = ()=>{
+      if (!hasBroadcastEvents){
+        return;
+      };
+      const sendWithThisCon = (c, payload)=>{
+        c.send(JSON.stringify(payload));
+      };
+      obj["_local_emit"] = obj["emit"];
+      obj["emit"] = (event, ...args)=>{
+        if (obj["_local_emit"]){
+          obj["_local_emit"](event, ...args);
+        };
+        if (broadcastEvents["*"] || broadcastEvents[event]){
+          for (const con of this.connectionManager.connections.values()) {
+            if (con.objects.has(key)) {
+              con.send(JSON.stringify({
+                "type": "event",
+                "payload": {"type": objectType, "id": id, "event": event, "args": args}
+              }));
+            }
+          }
+        }
+      }
+    };
+
+    if (definition.overrides){
+      for (const o of definition.overrides){
+        const event = o["event"];
+        let broadcast = false;
+        if (o["profile"] === "broadcast"){
+          broadcast = true;
+        } else if (o["profile"] === "sync"){
+          broadcast = true;
+        }
+
+        if (event){
+          if (broadcast){
+            hasBroadcastEvents = true;
+            broadcastEvents[event] = true;
+          }
+        }
+      }
+      if (hasBroadcastEvents){
+        prepareEvents();
+      }
+    }
+
+    return obj;
+  }
+
+
+  getOrCreate(objectType, id, remoteConnection) {
     const definition = this.objectDefinitions.get(objectType);
     if (!definition) throw new Error(`no definition for type "${objectType}"`);
+
+    const key = keyFromIds(objectType, id);
 
     if (remoteConnection && remoteConnection.objects.has(key)){
       return remoteConnection.objects.get(key);
@@ -61,13 +122,11 @@ class Factory {
       objEntry = this.objects.get(key);
       obj = objEntry.instance;
     }else{
-      const ctor = definition.constructor;
-      if (!ctor) throw new Error(`Constructor not registered for type "${objectType}"`);
-      console.log("creating: " + key);
-      obj = ctor(id);
+      obj = this.create(objectType, id, definition);
       objEntry = { instance: obj, trackers: new Set() };
       this.objects.set(key, objEntry);
     }
+
     // allows us to override specific functions for each time the object gets returned
     const wrapObj = Object.create(obj);
 
@@ -79,7 +138,7 @@ class Factory {
       if (broadcast){
         wait = false;
       }
-      
+
       const sendWithThisCon = (c, parameters)=>{
         let payload = {"type": objectType, "id": id, "method": method, "parameters": parameters};
         if (wait){
@@ -128,33 +187,6 @@ class Factory {
       };
     };
 
-    let broadcastEvents = {};
-    let hasBroadcastEvents = false;
-    const prepareEvents = ()=>{
-      if (!hasBroadcastEvents){
-        return;
-      };
-      const sendWithThisCon = (c, payload)=>{
-        c.send(JSON.stringify(payload));
-      };
-      obj["_local_emit"] = obj["emit"]
-      obj["emit"] = (event, ...args)=>{
-        if (obj["_local_emit"]){
-          obj["_local_emit"](event, ...args);
-        };
-        if (broadcastEvents["*"] || broadcastEvents[event]){
-          for (const con of this.connectionManager.connections.values()) {
-            if (con.objects.has(key)) {
-              con.send(JSON.stringify({
-                "type": "event", 
-                "payload": {"type": objectType, "id": id, "event": event, "args": args}
-              }));
-            }
-          }
-        }
-      }
-    };
-
     if (definition.overrides){
       for (const o of definition.overrides){
         let remote = !(o.sides && o.sides[side]);
@@ -168,6 +200,10 @@ class Factory {
           if (o["profile"] === "best match"){
             broadcast = false;
             wait = true;
+            error = true;
+          } else if (o["profile"] === "best match no wait"){
+            broadcast = false;
+            wait = false;
             error = true;
           } else if (o["profile"] === "broadcast"){
             broadcast = true;
@@ -183,20 +219,13 @@ class Factory {
           if (method){
             wrapObj[method] = createOverrideMethod(objectType, id, method, broadcast, wait, error, runLocal);
           }
-          if (event){
-            if (broadcast){
-              hasBroadcastEvents = true;
-              broadcastEvents[event] = true;
-            }
-          }
-
         }
       }
-      if (hasBroadcastEvents){
-        prepareEvents();
-      }
     }
+
+
     objEntry.trackers.add(wrapObj);
+
     wrapObj["done"] = ()=>{
       objEntry.trackers.delete(wrapObj);
       if (objEntry.trackers.size === 0){

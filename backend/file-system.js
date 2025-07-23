@@ -4,6 +4,8 @@ import path from 'path';
 import fs  from 'fs/promises';
 import {idToAbsPath} from "./pathTranslation.js"
 
+import FileWatcher from "./file-watcher.js"
+
 // we export one single object because this file needs to be imported both on the backend and frontend side.
 // this file is the backend version but the frontend version simply exports a {}
 // thats why we have no specific named exports, otherwise it would break the inport on the frontend
@@ -41,6 +43,11 @@ export default {
     } else {
       await fs.writeFile(targetPath, '', 'utf8');
     }
+  },
+
+  watch(dirId) {
+    const targetPath = idToAbsPath(dirId);
+    return new FileWatcher(targetPath);
   },
 
   /* ---- NEW helper: existence check (handy later) ---- */
