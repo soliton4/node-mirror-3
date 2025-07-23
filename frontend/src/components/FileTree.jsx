@@ -41,11 +41,10 @@ export default function FileTree({ }) {
         >
           <FileNode
             key={"/"}
-            path={"/"}
+            id={"/"}
             name={"/"}
             isDirectory={true}
             level={0}
-            dir={Dir('/')}
             scrollContainerRef={scrollContainerRef}
           />
       </div>

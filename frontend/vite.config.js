@@ -16,6 +16,9 @@ function rewriteBackendToFake() {
     name: 'rewrite-backend-relative',
     enforce: 'pre',
     async resolveId(source, importer) {
+      if (source.includes("auth")) {
+        console.log("source: " + source + " importer: " + importer);
+      };
       if (!source.startsWith('.') || !importer) return null;
 
       const importerPath = importer.startsWith('file:')
@@ -30,7 +33,16 @@ function rewriteBackendToFake() {
       const subPath = relative(realBackendRoot, absoluteExpected);
       const rewritten = join(fakeBackendRoot, subPath);
 
-      return this.resolve(rewritten, importer, { skipSelf: true });
+      let ret = this.resolve(rewritten, importer, { skipSelf: true });
+      if (source.includes("auth")) {
+        console.log(ret);
+        ret.then((v)=>{
+          console.log(v);
+        }, (e)=>{
+          console.log("error: " + e);
+        });
+      }
+      return ret;
     }
   };
 }

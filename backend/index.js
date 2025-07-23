@@ -6,12 +6,11 @@ import crypto from 'crypto';
 import { WebSocketServer } from 'ws';
 import { fileURLToPath } from 'url';
 import http from 'http';
-import { validatePassword } from './auth.js';
 
 import connectionManager from '../shared/ConnectionManager.js';
 import factory from '../shared/Factory.js';
-import Dir from '../shared/objects/Dir.js';
-import File from '../shared/objects/File.js';
+import used from '../shared/objects/used.js';
+
 
 
 factory.init(connectionManager, "server");
@@ -72,32 +71,7 @@ wss.on('connection', (ws, req) => {
 
   console.log(`New WS connection with sessionId: ${sessionId}`);
 
-  ws.isAuthenticated = false;
-
-  if (session?.authenticated) {
-    ws.send(JSON.stringify({ type: 'auth_success' }));
-    ws.isAuthenticated = true;
-    connectionManager.add(ws);
-  } else {
-    ws.send(JSON.stringify({ type: 'need_auth' }));
-  }
-
-
-  ws.on('message', (msg) => {
-    const data = JSON.parse(msg);
-
-    if (data.type === 'auth') {
-      if (validatePassword(data.payload.password)) {
-        sessionStore.set(sessionId, { authenticated: true });
-        ws.isAuthenticated = true;
-        connectionManager.add(ws);
-        ws.send(JSON.stringify({ type: 'auth_success' }));
-      } else {
-        ws.send(JSON.stringify({ type: 'auth_failed' }));
-      }
-    }
-  });
-
+  connectionManager.add(ws, session?.authenticated);
 
 });
 

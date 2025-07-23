@@ -4,7 +4,9 @@ import { createPortal } from 'react-dom';
 
 import { useTabs } from './TabContext';
 
-const FileNode = ({ name, path, isDirectory, level, dir, scrollContainerRef }) => {
+import Dir from '../../../shared/objects/Dir2.js';
+
+const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
   const [expanded, setExpanded] = useState(false);
   const [children, setChildren] = useState([]);
 
@@ -17,18 +19,30 @@ const FileNode = ({ name, path, isDirectory, level, dir, scrollContainerRef }) =
 
   const toggle = async () => {
     if (!isDirectory) {
-      console.log('Clicked file:', `${path}${name}`);
-      openFile(`${path}${name}`);
+      openFile(id);
       return;
-    }
-
-    if (!expanded && children.length === 0) {
-      const entries = await dir.listFiles(`${path}${name}/`);
-      setChildren(entries);
     }
 
     setExpanded(!expanded);
     setHovered(false);
+  };
+  if (isDirectory) {
+    useEffect(() => {
+      const dir = Dir(id);
+      let cancelled = false;
+
+      const fetch = async () => {
+        const c = await dir.children();
+        if (!cancelled) setChildren(c);
+      };
+      fetch();
+
+      return () => {
+        cancelled = true;
+        dir.done(); // <-- will be called when the component unmounts or dependencies change
+      };
+    }, [id]);
+
   };
 
   useEffect(() => {
@@ -67,16 +81,6 @@ const FileNode = ({ name, path, isDirectory, level, dir, scrollContainerRef }) =
         onMouseEnter={() => {
           if (nodeRef.current) {
             const rect = nodeRef.current.getBoundingClientRect();
-            console.log({
-              top: rect.top,
-              left: rect.left,
-              right: rect.right,
-              bottom: rect.bottom,
-              width: rect.width,
-              height: rect.height,
-              x: rect.x,
-              y: rect.y,
-            });
             setOverlayStyle({
               top: rect.top,
               left: rect.left,
@@ -86,8 +90,12 @@ const FileNode = ({ name, path, isDirectory, level, dir, scrollContainerRef }) =
           }
           setHovered(true);
         }}
-      onMouseLeave={() => setHovered(false)} onClick={toggle} 
+        onMouseLeave={() => setHovered(false)} 
+        onClick={toggle} 
         style={{ 
+          position: isDirectory ? 'sticky' : 'relative',  
+          top: isDirectory ? `${level * 24}px` : undefined, 
+          zIndex: isDirectory ? `${100 - level}` : undefined,
           paddingLeft: level * 16, 
           cursor: isDirectory ? 'pointer' : 'default',
           whiteSpace: 'nowrap',         // ← prevents line wrap
@@ -115,12 +123,10 @@ const FileNode = ({ name, path, isDirectory, level, dir, scrollContainerRef }) =
       )}
       {expanded && children.map(child => (
         <FileNode
-          key={child.name}
           name={child.name}
-          path={`${path}${name}/`}
+          id={`${id === "/" ? "/" : id + "/"}${child.name}`}
           isDirectory={child.isDirectory}
           level={level + 1}
-          dir={dir}
           scrollContainerRef={scrollContainerRef}
         />
       ))}

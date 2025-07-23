@@ -15,13 +15,16 @@ function construct(id) {
       return fileSystem.readFileStr(id);
     },
     async reload() {
+      console.log(id + " reload");
       _buffer = null;
       return this.getContent();
     },
     async setContent(newContent) {
+      console.log(id + " setContent");
       _buffer = newContent;   // keep in memory until saved
     },
     async save() {
+      console.log(id + " save");
       if (_buffer === null) return;
       await fileSystem.writeStringToFile(id, _buffer);
       _buffer = null;

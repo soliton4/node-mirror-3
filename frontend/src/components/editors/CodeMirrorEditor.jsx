@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import { basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark'; // Dark theme
 import { useGlobal } from '../../GlobalContext';
+import File from '../../../../shared/objects/File';
 
 const fullHeightTheme = EditorView.theme({
   "&": {
@@ -18,12 +19,68 @@ const fullHeightTheme = EditorView.theme({
   }
 });
 
-export default function CodeMirrorEditor({ value, onChange, onSave }) {
+const CodeMirrorEditor = forwardRef(({ id, setToolbarExtras }, ref) => {
   const wrapperRef = useRef(null);
   const viewRef = useRef(null);
+  const fileRef = useRef(null); // Store File instance
+  const currentContent = useRef('');
 
   const { state } = useGlobal();
   const darkMode = state.config.darkMode;
+
+  const fileExtension = id ? id.split('.').pop().toLowerCase() : "";
+
+  const updateEditor = (value) => {
+    currentContent.current = value;
+    if (!viewRef.current) return;
+    viewRef.current.dispatch({
+      changes: {
+        from: 0,
+        to: viewRef.current.state.doc.length,
+        insert: value
+      }
+    });
+  };
+
+  const onChange = (text) => {
+    currentContent.current = text;
+    fileRef.current?.setContent(text);
+  };
+
+  const onSave = () => {
+    fileRef.current?.save();
+  };
+
+
+  useImperativeHandle(ref, () => ({
+    async reload() {
+      const content = await fileRef.current?.reload();
+      if (content != null) {
+        updateEditor(content);
+        currentContent.current = content;
+      }
+    }
+  }));
+
+
+  useEffect(() => {
+    const file = File(id);
+    fileRef.current = file;
+
+    const fetch = async () => {
+      const v = await file.getContent();
+
+      updateEditor(v);
+    };
+    fetch();
+
+
+    return () => {
+      file.done(); // <-- will be called when the component unmounts or dependencies change
+      fileRef.current = null;
+    };
+  }, [id]);
+
 
   // Initial mount
   useEffect(() => {
@@ -35,7 +92,6 @@ export default function CodeMirrorEditor({ value, onChange, onSave }) {
     });
 
     const editorState = EditorState.create({
-      doc: value,
       extensions: [
         basicSetup,
         javascript(),
@@ -64,17 +120,8 @@ export default function CodeMirrorEditor({ value, onChange, onSave }) {
     };
   }, [darkMode]);
 
-  // External updates to value
-  useEffect(() => {
-    if (!viewRef.current) return;
-
-    const current = viewRef.current.state.doc.toString();
-    if (current !== value) {
-      viewRef.current.dispatch({
-        changes: { from: 0, to: current.length, insert: value }
-      });
-    }
-  }, [value]);
 
   return <div ref={wrapperRef} style={{ height: '100%' }} />;
-}
+});
+
+export default CodeMirrorEditor;

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import openFile from '../../../shared/objects/File';
+import React, { useState, useEffect, useRef } from 'react';
+import File from '../../../shared/objects/File';
 import ReactCodeMirrorEditor from './editors/ReactCodeMirrorEditor';
 import CodeMirrorEditor from './editors/CodeMirrorEditor';
 import HexEditor from './editors/HexEditor';
@@ -46,28 +46,37 @@ export default function FileView({ id }) {
     padding: '2px 6px',
   };
 
+  const fileRef = useRef(null);
+
   
   const fileExtension = id ? id.split('.').pop().toLowerCase() : "";
 
   const [toolbarExtras, setToolbarExtras] = useState(null);
 
   
-  const fileObj = openFile(id);
   const [mode, setMode] = useState('react-codemirror');
-  const [buffer, setBuffer] = useState('');
+
+  const reactCodeMirrorEditorRef = useRef(null);
 
   useEffect(() => {
-    (async () => {
-      const content = await fileObj.getContent();
-      setBuffer(content);
-    })();
-  }, [fileObj]);
+    const file = File(id);
+    fileRef.current = file;
+    return ()=>{
+      file.done();
+      fileRef.current = null;
 
-  const updateBuffer = (text) => fileObj.setContent(text).then(() => setBuffer(text));
-  const saveFile     = () => fileObj.save();
+    };
+  }, [id]);
+
+  const saveFile     = () => {
+    if (fileRef.current){
+      fileRef.current.save()
+    };
+  };
   const reloadFile   = async () => {
-    const content = await fileObj.reload();
-    setBuffer(content);
+    if (reactCodeMirrorEditorRef.current){
+      reactCodeMirrorEditorRef.current.reload();
+    }
   };
 
   return (
@@ -99,18 +108,17 @@ export default function FileView({ id }) {
         minHeight: 0, // ← this is the key
       }}>
         {mode === 'codemirror' && (
-          <CodeMirrorEditor value={buffer} onChange={updateBuffer} fileExtension={fileExtension} />
+          <CodeMirrorEditor id={id} fileExtension={fileExtension} />
         )}
         {mode === 'react-codemirror' && (
           <ReactCodeMirrorEditor 
-            valuePar={buffer} 
-            onChangePar={updateBuffer} 
-            fileExtension={fileExtension} 
+            id={id}
+            ref={reactCodeMirrorEditorRef}
             setToolbarExtras={setToolbarExtras}
             />
         )}
         {mode === 'hex' && (
-          <HexEditor value={buffer} onChange={updateBuffer} />
+          <HexEditor />
         )}
       </div>
     </div>

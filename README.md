@@ -203,21 +203,21 @@ The frontend layout uses a **Vite + React + CodeMirror 6** stack, organized like
 
 ## AI App Development Experiment
 
-I am using this project as an experiment in AI-based development. The first commit was created almost entirely with help of this [ChatGPT interaction](https://chatgpt.com/share/6878426f-5e0c-8013-8ea2-3a39aa910a91).  
+### I am using this project as an experiment in AI-based development. The first commit was created almost entirely with help of this [ChatGPT interaction](https://chatgpt.com/share/6878426f-5e0c-8013-8ea2-3a39aa910a91).  
 
-The second session was more challenging. I was trying to fix a scrolling issue, but ChatGPT initially read the wrong project. Even after I pasted the URL to my Git repository, it kept referencing an outdated version of CodeMirror. It eventually admitted that it couldn't actually read live websites.
+### The second session was more challenging. I was trying to fix a scrolling issue, but ChatGPT initially read the wrong project. Even after I pasted the URL to my Git repository, it kept referencing an outdated version of CodeMirror. It eventually admitted that it couldn't actually read live websites.
 
 I also asked ChatGPT to include missing information about the render hierarchy in the README, but it introduced an error by duplicating the toolbar. I’m curious to see if it will recognize and correct that mistake when I paste this updated README into our next session.
 
 Here is the link to that [ChatGPT interaction](https://chatgpt.com/share/68785435-64d4-8013-9f06-191770320691)
 
 
-Session 3 was a complete failure.  
+### Session 3 was a complete failure.  
 All I wanted was to add a **dark mode toggle**—you’d think that would be a simple task at this point. Instead, ChatGPT made all sorts of unnecessary changes and messed with my existing logic to the point where I had to *pull the plug* and run a `git checkout .`, reverting everything.
 
 Honestly, I’m not sure I can complete the `node-mirror` redesign with this approach. Moving forward, I’ll need to rethink how I utilize AI assistance.
 
-# What I Learned
+### What I Learned
 
 - I cannot rely on ChatGPT to get an overview of source files on its own.
 - It fails to look up file content on GitHub.
@@ -232,7 +232,7 @@ For those interested in the struggle, here’s the [ChatGPT interaction](https:/
 I apologize for the hassle and confusion. Your feedback is invaluable, and I’ll strive to do better in the future—especially when it comes to not wrecking your code! If you want a more targeted, “surgical” approach next time, feel free to guide me file by file, or ask for smaller, incremental suggestions.
 
 
-Session 4 was a partial success. I had to restart from scratch because it proved too much to ask ChatGPT not to destroy my existing source code when applying changes—or to get a basic overview of a project we had built together in a previous session.
+### Session 4 was a partial success. I had to restart from scratch because it proved too much to ask ChatGPT not to destroy my existing source code when applying changes—or to get a basic overview of a project we had built together in a previous session.
 
 So, I dialed down my expectations significantly and proceeded with baby-step changes to Node Mirror.
 
@@ -245,6 +245,12 @@ The funniest—or maybe saddest—part came at the end, when I asked ChatGPT to 
 Even worse, it insisted that it wasn’t instructed to do so, which honestly feels a bit like gaslighting.
 
 Have a look for yourself in the [ChatGPT interaction](https://chatgpt.com/share/687c1c60-c584-8013-a562-d4d54eb331cd).
+
+
+### A relarively productive session.
+besides the fact that chatgpt doesnt gets confused with 5 levels of dom hirarchy and cant make up its mind about weather to add or remove "overflow: 'hidden'", we accomplished quite something.
+the file tree is now scrolling correctly and if the current node is to large it will show you when you hover. 
+almost on pair with the original node-mirror except for some styling [chat link](https://chatgpt.com/share/687eac5f-0674-8013-baf3-a6fe5f9eec19)
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 ## License
