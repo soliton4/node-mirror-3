@@ -252,6 +252,9 @@ besides the fact that chatgpt doesnt gets confused with 5 levels of dom hirarchy
 the file tree is now scrolling correctly and if the current node is to large it will show you when you hover. 
 almost on pair with the original node-mirror except for some styling [chat link](https://chatgpt.com/share/687eac5f-0674-8013-baf3-a6fe5f9eec19)
 
+### Redesigning the Editor
+i had to completely change how the editor objects handle the inner state and reacto to changes. editing became impossible when the file grew to a certain size. editor updates that were out of sync triggered a jumping of the cursor.  
+chatGPT helped me understand whats happening and come up with a proper redesign. sometimes it can be really impressive. [chat link](https://chatgpt.com/share/6880339b-07c0-8013-8165-5b98ce7417f8)
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 ## License
 
