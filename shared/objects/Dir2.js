@@ -19,7 +19,10 @@ function construct(id) {
     id,
     async children() {
       return fileSystem.listDir(id);
-    }
+    },
+    async createNew(name, isDir){
+      fileSystem.createNew(id, name, isDir);
+    },
   };
 
   return instance;
@@ -32,6 +35,10 @@ function construct(id) {
 */
 factory.register(OBJECT_TYPE, construct, [{
   "method": "children",
+  "sides": {"server": true},
+  "profile": "best match",
+}, {
+  "method": "createNew",
   "sides": {"server": true},
   "profile": "best match",
 }, {

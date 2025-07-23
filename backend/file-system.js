@@ -26,6 +26,22 @@ export default {
       path: path.posix.join(dirId, e.name)   // virtual path, posix style
     }));
   },
+  async createNew(dirId, name, isDir) {
+    const targetPath = path.join(idToAbsPath(dirId), name);
+  
+    try {
+      const stat = await fs.stat(targetPath);
+      throw new Error(`"${name}" already exists in "${dirId}"`);
+    } catch (err) {
+      if (err.code !== 'ENOENT') throw err; // only proceed if file doesn't exist
+    }
+  
+    if (isDir) {
+      await fs.mkdir(targetPath, { recursive: false });
+    } else {
+      await fs.writeFile(targetPath, '', 'utf8');
+    }
+  },
 
   /* ---- NEW helper: existence check (handy later) ---- */
   async exists(id) {

@@ -52,6 +52,10 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
     }, [id]);
 
   };
+  const createNewItem = (name, isFolder)=>{
+    const dir = Dir(id);
+    dir.createNew(name, isFolder);
+  };
 
   useEffect(() => {
     if (!hovered || !nodeRef.current) return;
@@ -219,6 +223,7 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <button onClick={() => {
               console.log(`Create ${isNewDir ? 'folder' : 'file'}: ${newItemName} in ${id}`);
+              createNewItem(newItemName, isNewDir);
               setShowNewDialog(false);
               setNewItemName('');
             }}>Create</button>
