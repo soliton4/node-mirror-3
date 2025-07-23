@@ -15,6 +15,14 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
 
   const [hovered, setHovered] = useState(false);
 
+  const [contextMenu, setContextMenu] = useState(null);
+
+  const [showNewDialog, setShowNewDialog] = useState(false);
+  const [newItemName, setNewItemName] = useState('');
+  const [isNewDir, setIsNewDir] = useState(true); // default to folder
+  const inputRef = useRef(null);
+
+
   const { openFile } = useTabs();
 
   const toggle = async () => {
@@ -71,6 +79,22 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
   }, [hovered]);
 
 
+  useEffect(() => {
+    const handleClick = () => {
+      setContextMenu(null);
+    };
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, []);
+
+
+  useEffect(() => {
+    if (showNewDialog && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showNewDialog]);
+
+
 
   return (
     <div 
@@ -92,6 +116,13 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
         }}
         onMouseLeave={() => setHovered(false)} 
         onClick={toggle} 
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setContextMenu({
+            x: e.clientX,
+            y: e.clientY,
+          });
+        }}
         style={{ 
           position: isDirectory ? 'sticky' : 'relative',  
           top: isDirectory ? `${level * 24}px` : undefined, 
@@ -130,6 +161,74 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
           scrollContainerRef={scrollContainerRef}
         />
       ))}
+
+      {contextMenu && createPortal(
+        <div
+          className="context-menu"
+          style={{
+            top: contextMenu.y,
+            left: contextMenu.x,
+          }}
+        >
+          <div className="context-menu__item" onClick={() => {
+            setContextMenu(null);
+            toggle();
+          }}>
+            Open
+          </div>
+          {isDirectory && (
+            <div className="context-menu__item" onClick={() => {
+              setContextMenu(null);
+              setShowNewDialog(true);
+            }}>
+              New…
+            </div>
+          )}
+        </div>,
+        document.body
+      )}
+
+
+
+      {showNewDialog && createPortal(
+        <div className="new-dialog">
+          <h4>Create New</h4>
+          <input
+            ref={inputRef}
+            type="text"
+            value={newItemName}
+            onChange={(e) => setNewItemName(e.target.value)}
+            placeholder="Enter name"
+          />
+          <div className="type-selector">
+            <label>
+              <input
+                type="radio"
+                checked={isNewDir}
+                onChange={() => setIsNewDir(true)}
+              /> Folder
+            </label>
+            <label>
+              <input
+                type="radio"
+                checked={!isNewDir}
+                onChange={() => setIsNewDir(false)}
+              /> File
+            </label>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <button onClick={() => {
+              console.log(`Create ${isNewDir ? 'folder' : 'file'}: ${newItemName} in ${id}`);
+              setShowNewDialog(false);
+              setNewItemName('');
+            }}>Create</button>
+            <button onClick={() => setShowNewDialog(false)}>Cancel</button>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      
     </div>
   );
 };
