@@ -255,6 +255,11 @@ almost on pair with the original node-mirror except for some styling [chat link]
 ### Redesigning the Editor
 i had to completely change how the editor objects handle the inner state and reacto to changes. editing became impossible when the file grew to a certain size. editor updates that were out of sync triggered a jumping of the cursor.  
 chatGPT helped me understand whats happening and come up with a proper redesign. sometimes it can be really impressive. [chat link](https://chatgpt.com/share/6880339b-07c0-8013-8165-5b98ce7417f8)
+
+### lots of details
+the biggest change is the ability to watch the file system and file content. if 2 instances of nodemirror are open and show the same file the input of one side will trigger changes on the other side. we have a new file / new folder function. all in all it is taking shape.  
+the synced object system has been redesigned. [chat link](https://chatgpt.com/share/6881739e-1a6c-8013-bdfa-a86845a432da)
+
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 ## License
 
