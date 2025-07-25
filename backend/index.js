@@ -38,9 +38,8 @@ app.use((req, res, next) => {
     sessionStore.set(sessionId, { authenticated: false });
 
     res.cookie('sessionId', sessionId, {
-      httpOnly: false, // if you want client-side access, otherwise true for security
+      httpOnly: false,
       sameSite: 'Lax',
-      secure: false,   // set to true in production w/ HTTPS
     });
   }
 
@@ -76,6 +75,6 @@ wss.on('connection', (ws, req) => {
 });
 
 
-server.listen(port, () => {
+server.listen(port, '0.0.0.0', () => {
   console.log(`Server listening at http://localhost:${port}`);
 });

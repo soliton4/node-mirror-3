@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { WebSocketContext } from './WebSocketProvider';
 import PasswordPrompt from './PasswordPrompt';
 import VerticalSplitter from './VerticalSplitter';
-import FileTree from './components/FileTree';
+import Navigation from './components/Navigation';
 import TabManager from './components/TabManager';
 import { TabContext } from './components/TabContext';
 import { useGlobal } from './GlobalContext';
@@ -60,7 +60,7 @@ const App = () => {
     <TabContext.Provider value={{ openTabs, activeTab, openFile, closeTab }}>
       <VerticalSplitter
         left={
-          <FileTree darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
+          <Navigation darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
         }
         right={<TabManager />}
       />

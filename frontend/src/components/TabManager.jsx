@@ -1,53 +1,61 @@
-import React from 'react';
+// frontend/src/components/TabManager.jsx
+
+import React, { useContext, useEffect, useState } from 'react';
+import * as Tabs from '@radix-ui/react-tabs';
+import { TabContext } from './TabContext';
 import FileView from './FileView';
-import { useTabs } from './TabContext'; 
-import { useGlobal } from '../GlobalContext';
 
-export default function TabManager() {
-  const { openTabs, activeTab, closeTab, openFile } = useTabs();
-  const { state } = useGlobal();
-  const darkMode = state.config.darkMode;
+const TabManager = () => {
+  const { openTabs, activeTab, closeTab } = useContext(TabContext);
+  const [internalActive, setInternalActive] = useState(null);
 
-  const tabHeaderStyle = {
-    display: 'flex',
-    background: darkMode ? '#2c2c2c' : '#eee',
-    borderBottom: '1px solid #444',
-  };
+  // Set last opened tab as active when tabs change
+  useEffect(() => {
+    if (openTabs.length > 0) {
+      setInternalActive(openTabs[openTabs.length - 1]);
+    } else {
+      setInternalActive(null);
+    }
+  }, [openTabs]);
 
-  const tabStyle = (id) => ({
-    padding: '4px 8px',
-    cursor: 'pointer',
-    background: activeTab === id
-      ? (darkMode ? '#1e1e1e' : '#fff')
-      : (darkMode ? '#3a3a3a' : '#ddd'),
-    border: '1px solid #555',
-    borderBottom: 'none',
-    color: darkMode ? '#eee' : '#000',
-  });
+  if (openTabs.length === 0) {
+    return <div className="editor-pane">No file open</div>;
+  }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      {/* ---- tab header ---- */}
-      <div style={tabHeaderStyle}>
-        {openTabs.map(id => (
-          <div key={id}
-               onClick={() => openFile(id)}
-               style={tabStyle(id)}>
-            {id.split('/').pop()}
-            <span onClick={(e) => {
-              e.stopPropagation();
-              closeTab(id);
-            }} style={{ marginLeft: 4 }}>×</span>
-          </div>
+    <Tabs.Root
+      className="editor-pane"
+      value={internalActive}
+      onValueChange={setInternalActive}
+    >
+      <Tabs.List className="tab-list">
+        {openTabs.map((tabId) => (
+          <Tabs.Trigger
+            key={tabId}
+            className={`tab-trigger ${internalActive === tabId ? 'active' : ''}`}
+            value={tabId}
+          >
+            <span>{tabId.split('/').pop()}</span>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                closeTab(tabId);
+              }}
+              className="close-btn"
+            >
+              ×
+            </button>
+          </Tabs.Trigger>
         ))}
-      </div>
+      </Tabs.List>
 
-      {/* ---- content ---- */}
-      <div style={{ flex: 1, minHeight: 0 }}>
-        {activeTab
-          ? <FileView key={activeTab} id={activeTab} />
-          : <em style={{ padding: 16 }}>No file selected</em>}
-      </div>
-    </div>
+      {openTabs.map((tabId) => (
+        <Tabs.Content key={tabId} value={tabId} className="editor-container" forceMount>
+          <FileView id={tabId} />
+        </Tabs.Content>
+      ))}
+    </Tabs.Root>
   );
-}
+};
+
+export default TabManager;

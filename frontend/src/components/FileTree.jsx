@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Dir from '../../../shared/objects/Dir.js';
 import FileNode from './FileNode';
-import FileTreeToolbar from './FileTreeToolbar';
 
 
 
@@ -29,7 +28,6 @@ export default function FileTree({ }) {
         height: "100%",
       }}
       >
-      <FileTreeToolbar />
       <div
         ref={scrollContainerRef} 
         style={{ 
