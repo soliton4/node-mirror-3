@@ -260,6 +260,8 @@ chatGPT helped me understand whats happening and come up with a proper redesign.
 the biggest change is the ability to watch the file system and file content. if 2 instances of nodemirror are open and show the same file the input of one side will trigger changes on the other side. we have a new file / new folder function. all in all it is taking shape.  
 the synced object system has been redesigned. [chat link](https://chatgpt.com/share/6881739e-1a6c-8013-bdfa-a86845a432da)
 
+### using radix 
+i debated with chatgpt about what kind of ui system to use. doing it all myself vs using a lib. that was quite interesting. then came the disappointing part. it just applied flex to everything and acted like it knew exactly how things behave. which it didnt. so i had to refresh my memory about how layouting works especially flex container and then supervise the changes. i would have rather focused on more interesting stuff instead but thats how ai programming works ... [chatgpt interaction](https://chatgpt.com/share/6883c2b9-5538-8013-bd11-ea156a4a79d7)
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 ## License
 
