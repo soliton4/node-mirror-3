@@ -23,11 +23,12 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
   const inputRef = useRef(null);
 
 
-  const { openFile } = useTabs();
+  const { open } = useTabs();
 
   const toggle = async () => {
     if (!isDirectory) {
-      openFile(id);
+      const name = id.split('/').filter(Boolean).pop() || '/';
+      open("file", id, name);
       return;
     }
 

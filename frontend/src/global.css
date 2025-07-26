@@ -447,3 +447,17 @@ body.dark-mode .accordion-trigger:hover {
   background-color: #3a3a3a;
 }
 
+
+
+
+.terminal-item {
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+
+.terminal-item:hover {
+  background: #333;
+}
+

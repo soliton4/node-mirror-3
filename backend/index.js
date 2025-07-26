@@ -10,15 +10,17 @@ import http from 'http';
 import connectionManager from '../shared/ConnectionManager.js';
 import factory from '../shared/Factory.js';
 import used from '../shared/objects/used.js';
-
+import { getConfig } from './configLoader.js'
 
 
 factory.init(connectionManager, "server");
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+
+const { port } = await getConfig();
+
 const app = express();
-const port = 3000;
 
 // Serve frontend static files
 const frontendPath = path.resolve(__dirname, '../frontend/dist');

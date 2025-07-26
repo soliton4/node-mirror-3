@@ -8,10 +8,12 @@
     "start": "npm run build && node backend/index.js"
   },
   "dependencies": {
+    "@xterm/headless": "^5.5.0",
     "chokidar": "^4.0.3",
     "cookie-parser": "^1.4.7",
     "express": "^4.19.0",
     "minimist": "^1.2.8",
+    "node-pty": "^1.0.0",
     "uuid": "^11.1.0",
     "ws": "^8.16.0"
   }
