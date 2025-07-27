@@ -6,7 +6,7 @@ import * as Tabs from '@radix-ui/react-tabs';
 import { useTabs } from './TabContext';
 import FileView from './FileView';
 import TerminalView from './TerminalView';
-
+import emptyStateImage from '../images/logo_1.png';
 
 const TabManager = () => {
   const tabApi = useTabs();
@@ -49,7 +49,14 @@ const TabManager = () => {
   };
 
   if (openTabs.length === 0) {
-    return <div className="editor-pane">No file open</div>;
+    return (
+      <div
+        className="editor-pane image-wrapper"
+        style={{ backgroundColor: '#000417' }}
+      >
+        <img src={emptyStateImage} alt="No file open"  className="image-fit" />
+      </div>
+    );
   }
  
   return (
