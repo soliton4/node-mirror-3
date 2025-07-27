@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import File from '../../../shared/objects/File';
 import ReactCodeMirrorEditor from './editors/ReactCodeMirrorEditor';
-import CodeMirrorEditor from './editors/CodeMirrorEditor';
+//import CodeMirrorEditor from './editors/CodeMirrorEditor';
 import HexEditor from './editors/HexEditor';
 import { useGlobal } from '../GlobalContext';
 
@@ -84,7 +84,6 @@ export default function FileView({ id }) {
       {/* ---- control bar ---- */}
       <div style={toolbarStyle}>
         <select style={selectStyle} value={mode} onChange={e => setMode(e.target.value)}>
-          <option value="codemirror">CodeMirror</option>
           <option value="react-codemirror">ReactCodeMirror</option>
           <option value="hex">Hex editor</option>
         </select>
@@ -107,9 +106,6 @@ export default function FileView({ id }) {
         flex: 1,
         minHeight: 0, // ← this is the key
       }}>
-        {mode === 'codemirror' && (
-          <CodeMirrorEditor id={id} fileExtension={fileExtension} />
-        )}
         {mode === 'react-codemirror' && (
           <ReactCodeMirrorEditor 
             id={id}

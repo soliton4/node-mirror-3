@@ -1,6 +1,7 @@
 // frontend/src/components/TabManager.jsx
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+
 import * as Tabs from '@radix-ui/react-tabs';
 import { useTabs } from './TabContext';
 import FileView from './FileView';
@@ -12,6 +13,16 @@ const TabManager = () => {
 
   const [openTabs, setOpenTabs] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
+  const tabRefs = useRef({});
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const ref = tabRefs.current[activeTab];
+      ref?.current?.focus?.();
+    }, 0);
+    return () => clearTimeout(timeout);
+  }, [activeTab]);
+
 
   // Expose `open(id)` to the context
   useEffect(() => {
@@ -74,11 +85,13 @@ const TabManager = () => {
 
       {openTabs.map((tab) => {
         let content;
+
+        const ref = (tabRefs.current[tab.key] ||= React.createRef());
       
         if (tab.type === 'file') {
-          content = <FileView id={tab.id} />;
+          content = <FileView id={tab.id} ref={ref}/>;
         } else if (tab.type === 'terminal') {
-          content = <TerminalView id={tab.id} />;
+          content = <TerminalView id={tab.id} ref={ref}/>;
         } else {
           content = <div>Unknown tab type</div>;
         }

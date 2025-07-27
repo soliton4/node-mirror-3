@@ -1,6 +1,5 @@
 // frontend/src/components/TerminalView.jsx
-
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
 
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
@@ -9,11 +8,27 @@ import 'xterm/css/xterm.css'; // import xterm styles
 import ServerTerminalInstance from '../../../shared/objects/terminal/Instance.js'
 import ServerTerminalView from '../../../shared/objects/terminal/View.js'
 
-const TerminalView = ({ id }) => {
+const TerminalView = forwardRef(({ id }, ref) => {
   const containerRef = useRef(null);
   const terminalInstanceRef = useRef(null); // store Terminal instance
   const xtermRef = useRef(null); // store xterm instance
   const fitRef = useRef(null);      // store FitAddon instance
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      console.log("focus()");
+      if (xtermRef){
+          if (xtermRef.current){
+            console.log("current");
+            if (xtermRef.current.focus){
+              console.log("current focus");
+              xtermRef.current.focus();
+            }
+          }
+      }
+      xtermRef.current?.focus();
+    }
+  }), []);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -53,7 +68,7 @@ const TerminalView = ({ id }) => {
 
     initViewer();
 
-    
+
 
     const resizeObserver = new ResizeObserver(() => {
       handleResize();
@@ -70,7 +85,7 @@ const TerminalView = ({ id }) => {
       // server side triggered resize
       xterm.resize(cols, rows);
     });
-    
+
     // Send user input to backend
     const xtermDataListener = xterm.onData((input) => {
       terminalInstance.input(input);
@@ -111,9 +126,9 @@ const TerminalView = ({ id }) => {
         overflow: 'hidden',
       }}
     >
-     
+
     </div>
   );
-};
+});
 
 export default TerminalView;
