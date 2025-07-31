@@ -7,6 +7,9 @@
     "build": "cd frontend && npm run build",
     "start": "npm run build && node backend/index.js"
   },
+  "engines" : { 
+    "node" : ">=20.19.0"
+  },
   "dependencies": {
     "@xterm/headless": "^5.5.0",
     "chokidar": "^4.0.3",
