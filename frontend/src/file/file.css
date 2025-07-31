@@ -1,0 +1,59 @@
+.file-node {
+  .text-node {
+    font-family: var(--font-family);
+    font-size: var(--font-size-3);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height);
+    
+    color: var(--color-text);
+    background-color: var(--color-background);
+    
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden; 
+
+    height: var(--row-h);
+    line-height: var(--row-h);   /* centers the text vertically */
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-sizing: border-box;
+  }
+  .text-node:hover {
+    background-color: var(--accent-indicator);
+    color: var(--accent-contrast);
+  }
+}
+
+.file-node.directory {
+  .text-node {
+    position: sticky;
+    cursor: pointer;
+  }
+}
+
+.file-node.text-node.overlay-node {
+  font-family: var(--font-family);
+  font-size: var(--font-size-3);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height);
+
+  background-color: var(--accent-indicator);
+  color: var(--accent-contrast);
+
+  opacity: 80%;
+  
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  white-space: nowrap;
+}
+
+.file-view .toolbar {
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--border-0);
+  padding: 4px 8px;
+  display: flex;
+  alignItems: center;
+  gap: 10px;
+}

@@ -4,20 +4,19 @@ import ReactCodeMirrorEditor from './editors/ReactCodeMirrorEditor';
 //import CodeMirrorEditor from './editors/CodeMirrorEditor';
 import HexEditor from './editors/HexEditor';
 import { useGlobal } from '../GlobalContext';
+import { useConfig } from '../ConfigContext';
 
 import { Save, RefreshCw } from 'lucide-react';
 
-export default function FileView({ id }) {
+export default function FileView({ id, statusChange }) {
 
-  const { state } = useGlobal();
-  const darkMode = state.config.darkMode;
+  const { config } = useConfig();
+  const darkMode = config.appearance === 'dark';
 
   const containerStyle = {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    background: darkMode ? '#1e1e1e' : '#fff',
-    color: darkMode ? '#eee' : '#000',
   };
 
   const toolbarStyle = {
@@ -61,7 +60,23 @@ export default function FileView({ id }) {
   useEffect(() => {
     const file = File(id);
     fileRef.current = file;
+
+    const updateStatus = async ()=>{
+      const status = await file.getStatus();
+      if (statusChange){
+        statusChange(id, status);
+      }
+    };
+    updateStatus();
+
+    const unsubscribe = file.on("change", (status)=>{
+      if (statusChange){
+        statusChange(id, status);
+      }
+    });
+    
     return ()=>{
+      unsubscribe();
       file.done();
       fileRef.current = null;
 
@@ -80,9 +95,9 @@ export default function FileView({ id }) {
   };
 
   return (
-    <div style={containerStyle}>
+    <div class="file-view" style={containerStyle}>
       {/* ---- control bar ---- */}
-      <div style={toolbarStyle}>
+      <div class="toolbar">
         <select style={selectStyle} value={mode} onChange={e => setMode(e.target.value)}>
           <option value="react-codemirror">ReactCodeMirror</option>
           <option value="hex">Hex editor</option>

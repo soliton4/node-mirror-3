@@ -101,7 +101,7 @@ function construct(id) {
     let fileContent = await fileSystem.readFileStr(id);
     updateStatus(fileContent);
     console.log("emmiting change " + id);
-    instance.emit("change");
+    instance.emit("change", status);
     
   };
 

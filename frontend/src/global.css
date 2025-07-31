@@ -1,29 +1,53 @@
 /* global.css */
 
-/* -----------------------
-   Base Layout + Structure
--------------------------- */
+:root {
 
-html, body, #root {
+  
+  --bg: #000417;
+  --bg-0: #000417;
+  --bg-1: #001135;
+  --bg-2: #001d62;
+  --bg-2: #002090;
+
+  --border-0: #001e62;
+
+  --bg-a-0: #0b10b0;
+  --bg-a-1: #12a0c2;
+  --bg-a-2: #16b7d4;
+  
+  --fg: #ffffff;
+  --fg-0: #ffffff;
+  --fg-1: #e0e0e0;
+  
+  --primary: #0066ff;
+}
+
+/* root element */
+#root{
   margin: 0;
   padding: 0;
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
   overflow: hidden;
   box-sizing: border-box;
 }
 
-/* Flex layout for sidebar + content */
-body > div,
-#root > div {
+
+/* -----------------------
+   Base Layout + Structure
+-------------------------- */
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
   display: flex;
-  height: 100%;
-  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-/* Box-sizing reset */
-*, *::before, *::after {
-  box-sizing: inherit;
-}
 
 /* -----------------------
    Editor Pane
@@ -31,6 +55,7 @@ body > div,
 
 
 .editor-pane {
+  background-color: var(--bg-0);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -64,19 +89,6 @@ body > div,
 }
 
 
-/* -----------------------
-   Toolbar
--------------------------- */
-
-.toolbar {
-  flex: 0 0 auto;
-  height: 40px;
-  border-bottom: 1px solid #ccc;
-  background-color: #f3f3f3;
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-}
 
 /* -----------------------
    Split View Styling
@@ -85,85 +97,26 @@ body > div,
 /* Resizable Panel Splitter */
 .split-resizer {
   width: 4px;
-  background-color: #ccc;
+  background-color: var(--bg-2);
   cursor: col-resize;
   transition: background-color 0.2s;
 }
 
 .split-resizer:hover {
-  background-color: #999;
+  background-color: var(--bg-3);;
 }
 
-body.dark-mode .split-resizer {
-  background-color: #333;
-}
-
-body.dark-mode .split-resizer:hover {
-  background-color: #555;
-}
 
 /* Wrapper div for panels */
 .split-pane {
   height: 100%;
   width: 100%;
-  overflow: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
 }
-
-
-/* -----------------------
-   Dark Mode Styling
--------------------------- */
-
-body.dark-mode {
-  background-color: #1e1e1e;
-  color: #e0e0e0;
-}
-
-body.dark-mode .split-left {
-  background-color: #1e1e1e;
-}
-
-body.dark-mode .split-right {
-  background-color: #121212;
-}
-
-body.dark-mode .split-divider {
-  background-color: #333;
-}
-
-body.dark-mode .editor-pane,
-body.dark-mode .editor-container {
-  background-color: #1e1e1e;
-}
-
-body.dark-mode .toolbar {
-  background-color: #2c2c2c;
-  border-bottom: 1px solid #444;
-}
-
-body.dark-mode button {
-  background-color: #444;
-  color: #fff;
-  border: none;
-}
-
-body.dark-mode input,
-body.dark-mode select,
-body.dark-mode textarea {
-  background-color: #333;
-  color: #fff;
-  border-color: #555;
-}
-
-body.dark-mode ::selection {
-  background: #555;
-  color: #fff;
-}
-
 
 
 /* -----------------------
@@ -182,8 +135,8 @@ body.dark-mode ::selection {
 
   width: auto;
   min-width: 140px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
+  background-color: var(--bg-0);
+  border: 1px solid var(--border-0);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   z-index: 10000;
   border-radius: 4px;
@@ -206,20 +159,9 @@ body.dark-mode ::selection {
 }
 
 .context-menu__item:hover {
-  background-color: #f0f0f0;
+  background-color: var(--bg-a-0);
 }
 
-/* Dark mode */
-body.dark-mode .context-menu {
-  background-color: #2a2a2a;
-  border-color: #444;
-  color: #e0e0e0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
-}
-
-body.dark-mode .context-menu__item:hover {
-  background-color: #3a3a3a;
-}
 
 
 /* -----------------------
@@ -235,11 +177,11 @@ body.dark-mode .context-menu__item:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ffffff;
-  color: #000;
+  background-color: var(--bg-0);
+  color: var(--fg-0);
   padding: 20px;
   width: 300px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-0);
   border-radius: 8px;
   z-index: 10001;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -251,7 +193,7 @@ body.dark-mode .context-menu__item:hover {
 .new-dialog input[type="text"] {
   padding: 8px;
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-0);
   border-radius: 4px;
 }
 
@@ -267,200 +209,18 @@ body.dark-mode .context-menu__item:hover {
   cursor: pointer;
   border-radius: 4px;
   border: none;
-  background-color: #e0e0e0;
+  background-color: var(--bg-1);
   transition: background 0.2s;
 }
 
 .new-dialog button:hover {
-  background-color: #d0d0d0;
-}
-
-/* Dark mode */
-body.dark-mode .new-dialog {
-  background-color: #2a2a2a;
-  color: #e0e0e0;
-  border-color: #444;
-}
-
-body.dark-mode .new-dialog input[type="text"] {
-  background-color: #333;
-  color: #fff;
-  border-color: #555;
-}
-
-body.dark-mode .new-dialog button {
-  background-color: #444;
-  color: #fff;
-}
-
-body.dark-mode .new-dialog button:hover {
-  background-color: #555;
-}
-
-
-/* -----------------------
-   Radix Tabs
--------------------------- */
-
-[data-state="inactive"] {
-  display: none;
-}
-
-.tab-list {
-  flex-shrink: 0;
-  height: 40px;
-  display: flex;
-  overflow-x: auto;
-}
-
-
-
-.tab-list::-webkit-scrollbar {
-  display: none; /* Chrome */
-}
-
-.tab-trigger {
-  padding: 6px 12px;
-  margin-right: 4px;
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-}
-
-.tab-trigger[data-state="active"] {
-  border-bottom-color: #007acc;
-  font-weight: bold;
-}
-
-.tab-trigger .close-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  margin-left: 4px;
-  color: #999;
-}
-
-.tab-trigger .close-btn:hover {
-  color: #000;
-}
-
-/* Dark mode overrides */
-body.dark-mode .tab-list {
-  background-color: #1e1e1e;
-  border-bottom-color: #444;
-  border-bottom: 1px solid #444; /* add this line */
-}
-
-body.dark-mode .tab-trigger {
-  color: #ccc;
-}
-
-body.dark-mode .tab-trigger[data-state="active"] {
-  border-bottom-color: #0af;
-  border-bottom: 2px solid #0af;
-}
-
-body.dark-mode .tab-trigger .close-btn {
-  color: #888;
-}
-
-body.dark-mode .tab-trigger .close-btn:hover {
-  color: #fff;
-}
-
-
-.navigation-pane {
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-
-.accordion-root {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-
-.accordion-item[data-state="open"] {
-  flex: 1; /* Take up remaining space */
-  display: flex;
-  flex-direction: column; /* Ensure children (trigger & content) stack */
-  min-height: 0;
-}
-
-.accordion-content {
-  overflow: hidden;
-  transition: height 300ms ease-out;
-}
-
-.accordion-content[data-state="open"] {
-  flex: 1; 
-  min-height: 0;
-}
-
-.accordion-content[data-state="closed"] {
-  display: none;
+  background-color: var(--bg-2);
 }
 
 
 
 
 
-
-.accordion-trigger {
-  all: unset;
-  width: 100%;
-  padding: 8px 0px;
-  font-weight: bold;
-  cursor: pointer;
-  background-color: #f0f0f0;
-  border-bottom: 1px solid #ccc;
-}
-.accordion-item h3 {
-  margin: 0; 
-  margin-block-start: 0;
-  margin-block-end: 0;
-}
-
-.accordion-trigger:hover {
-  background-color: #e0e0e0;
-}
-
-body.dark-mode .accordion-trigger {
-  background-color: #2c2c2c;
-  color: #eee;
-  border-bottom-color: #444;
-}
-
-body.dark-mode .accordion-trigger:hover {
-  background-color: #3a3a3a;
-}
-
-
-
-
-
-
-.accordion-trigger:hover {
-  background-color: #e0e0e0;
-}
-
-body.dark-mode .accordion-trigger:hover {
-  background-color: #3a3a3a;
-}
 
 
 
@@ -470,9 +230,10 @@ body.dark-mode .accordion-trigger:hover {
   cursor: pointer;
   border-radius: 4px;
   margin-bottom: 2px;
+  background: var(--bg-1)
 }
 
 .terminal-item:hover {
-  background: #333;
+  background: var(--bg-2);
 }
 

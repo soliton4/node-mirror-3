@@ -1,0 +1,21 @@
+.tab-trigger .close-button {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.tab-trigger:hover .close-button {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tab-trigger:hover .dirty-indicator {
+  opacity: 0;
+}
+
+.tab-content[data-state="inactive"] {
+  visibility: hidden;
+  height: 0 !important;
+  overflow: hidden;
+  pointer-events: none;
+}

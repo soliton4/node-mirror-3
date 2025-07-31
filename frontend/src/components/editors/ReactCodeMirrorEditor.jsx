@@ -4,13 +4,13 @@ import CodeMirror from '@uiw/react-codemirror';
 import { languages } from '@codemirror/language-data';
 import File from '../../../../shared/objects/File';
 import DoubleTimeout from '../../../../shared/DoubleTimeout.js';
+import { useConfig } from '../../ConfigContext';
+import themes from '@uiw/codemirror-themes'
 
 // Sorted list of languages by name
 const sortedLanguages = [...languages].sort((a, b) =>
   a.name.localeCompare(b.name)
 );
-
-//console.log(sortedLanguages);
 
 const ReactCodeMirrorEditor = forwardRef(({ id, setToolbarExtras }, ref) => {
   const wrapperRef = useRef(null); // our node
@@ -23,8 +23,8 @@ const ReactCodeMirrorEditor = forwardRef(({ id, setToolbarExtras }, ref) => {
 
 
   // style
-  const { state } = useGlobal();
-  const darkMode = state.config.darkMode;
+  const { config } = useConfig();
+  const { state } = useConfig();
 
   const [languageExtension, setLanguageExtension] = useState(null);
   const [selectedLangName, setSelectedLangName] = useState(null);
@@ -223,7 +223,7 @@ const ReactCodeMirrorEditor = forwardRef(({ id, setToolbarExtras }, ref) => {
         maxHeight="100%" // ← this forces internal scroll
         extensions={extensions}
         onChange={onChange} 
-        theme={darkMode ? 'dark' : 'light'}
+        theme={config.appearance}
         onCreateEditor={(view) => {
           viewRef.current = view;
         }}

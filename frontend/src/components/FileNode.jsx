@@ -1,10 +1,12 @@
 // frontend/src/components/FileNode.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { Portal, Theme } from "@radix-ui/themes";
 
 import { useTabs } from './TabContext';
 
 import Dir from '../../../shared/objects/Dir2.js';
+import '../file/file.css';
 
 const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
   const [expanded, setExpanded] = useState(false);
@@ -106,6 +108,7 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
 
   return (
     <div 
+      className={ isDirectory ? "file-node directory" : "file-node" }
       style={{ position: 'relative' }}
       >
       <div 
@@ -131,35 +134,25 @@ const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
             y: e.clientY,
           });
         }}
+        className="text-node"
         style={{ 
-          position: isDirectory ? 'sticky' : 'relative',  
           top: isDirectory ? `${level * 24}px` : undefined, 
           zIndex: isDirectory ? `${100 - level}` : undefined,
           paddingLeft: level * 16, 
-          cursor: isDirectory ? 'pointer' : 'default',
-          whiteSpace: 'nowrap',         // ← prevents line wrap
-          overflow: 'hidden',           // ← prevents overflow
         }}>
         {isDirectory ? (expanded ? '📂' : '📁') : '📄'} {name}
       </div>
-      {hovered && overlayStyle && createPortal(
-        <div style={{
-          position: 'fixed',
+      { hovered && overlayStyle && (<Portal><Theme>
+        <div className="file-node text-node overlay-node" style={{
           paddingLeft: level * 16,
           top: overlayStyle.top,
           left: overlayStyle.left,
-          width: overlayStyle.width,
+          width: "auto",
           height: overlayStyle.height,
-          background: 'rgba(50, 50, 50, 0.7)',
-          color: 'white',
-          whiteSpace: 'nowrap',
-          zIndex: 9999,
-          pointerEvents: 'none',
         }}>
           {isDirectory ? (expanded ? '📂' : '📁') : '📄'} {name}
-        </div>,
-        document.body
-      )}
+        </div>
+      </Theme></Portal>)}
       {expanded && children.map(child => (
         <FileNode
           key={`${id === "/" ? "/" : id + "/"}${child.name}`}

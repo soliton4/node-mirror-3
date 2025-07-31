@@ -1,11 +1,20 @@
+// frontend/src/components/TerminalSidebar.jsx
 import React, { useEffect, useRef, useState } from 'react';
-import Terminal from '../../../shared/objects/Terminal'; // shared terminal master object
-import { useTabs } from './TabContext'; // to use the `open` function
+import Terminal from '../../../shared/objects/Terminal';
+import { useTabs } from './TabContext';
+import {
+  Button,
+  Text,
+  Box,
+  Card,
+  Flex,
+  ScrollArea
+} from '@radix-ui/themes';
 
 const TerminalSidebar = () => {
-  const terminalMaster = useRef(null); 
-  const [terminalIds, setTerminalIds] = useState([]); 
-  const { open } = useTabs(); 
+  const terminalMaster = useRef(null);
+  const [terminalIds, setTerminalIds] = useState([]);
+  const { open } = useTabs();
 
   const handleNewTerminal = async () => {
     if (!terminalMaster.current) return;
@@ -24,7 +33,7 @@ const TerminalSidebar = () => {
     };
 
     update();
-    const unsubscribe = master.on("change", update);
+    const unsubscribe = master.on('change', update);
 
     return () => {
       unsubscribe();
@@ -33,42 +42,47 @@ const TerminalSidebar = () => {
     };
   }, []);
 
-   const handleClick = (id) => {
-    open('terminal', id, id); // type, id, name
+  const handleClick = (id) => {
+    open('terminal', id, id);
   };
 
   return (
-    <div className="terminal-pane">
-      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem' }}>
-        <strong>Terminals</strong>
-        <button onClick={handleNewTerminal}>New</button>
-      </div>
+    <Card variant="classic" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Flex justify="between" align="center" p="2" style={{ borderBottom: '1px solid var(--accent-a3)' }}>
+        <Text weight="bold">Terminals</Text>
+        <Button size="1" variant="solid" onClick={handleNewTerminal}>
+          New
+        </Button>
+      </Flex>
 
-      <div className="terminal-list" style={{ padding: '0.5rem' }}>
-        {terminalIds.length === 0 ? (
-          <p>No terminals yet.</p>
-        ) : (
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            {terminalIds.map((id) => (
-              <li
-                key={id}
-                onClick={() => handleClick(id)}
-                style={{
-                  padding: '4px 8px',
-                  cursor: 'pointer',
-                  borderRadius: '4px',
-                  marginBottom: '2px',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = '#333')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-              >
-                🖥️ {id}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
+      <Box flex="1" p="2">
+        <ScrollArea type="auto" scrollbars="vertical" style={{ height: '100%' }}>
+          {terminalIds.length === 0 ? (
+            <Text size="1" color="gray">No terminals yet.</Text>
+          ) : (
+            <Box as="ul" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {terminalIds.map((id) => (
+                <Box
+                  as="li"
+                  key={id}
+                  onClick={() => handleClick(id)}
+                  style={{
+                    padding: '6px 8px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-a3)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
+                  <Text size="1">🖥️ {id}</Text>
+                </Box>
+              ))}
+            </Box>
+          )}
+        </ScrollArea>
+      </Box>
+    </Card>
   );
 };
 
