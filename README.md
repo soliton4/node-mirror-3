@@ -280,6 +280,55 @@ oh and when i asked it to generate the updates in the readme it deleted the blog
 very shady openai! very shady indeed!
 [chatGPT interaction](https://chatgpt.com/share/68851e75-7604-8013-86d5-98c8acdafe65)
 
+
+### Session 6 – Config Context + Dark Mode Toggle
+
+Dark mode is now fully functional and reactive, using a shared `ConfigContext`. The `appearance` value is passed into the `<Theme>` component via a wrapping `ThemedApp`, which reacts to changes automatically. The toggle button updates the config, which causes rerenders where needed—without relying on `useThemeContext` or DOM class hacks. We verified that deep changes (e.g. nested config keys) also trigger updates correctly.  
+[chatGPT interaction](https://chatgpt.com/share/688780b2-c18e-8013-838e-7b34078ae210)
+
+^^^ this is the response i got from chatgpt when asked to update the readme. just this little snipet. and the link goes to a 404.
+
+overall ai programming is full of haluzination pitfalls. you have to be very vigelant before taking any of the ai claims as truth. 
+
+actually we struggled a lot this session. it feels like chatgpt is givig up at some point and is just giving me some sort of response no matter how low the chances of failure. what bothers me is the lack of self reflection which comes accross quite arrogant.
+
+there were so many things we struggled with that i didnt even remember and i asked chatgpt to summarize it ;)
+
+### Session 6 – Major Struggles with ChatGPT
+
+Here’s a summary of the biggest challenges I faced with ChatGPT’s response quality during this session:
+
+#### 1. Failure to Provide Direct Links When Requested
+- **What Happened**: Despite multiple direct requests for GitHub source links (e.g. to `ThemePanel`), ChatGPT gave long-winded summaries or pointed to general docs.
+- **Impact**: Wasted time, increased frustration, and violated explicit instructions.
+- **Why It Matters**: A simple direct link would have solved the issue faster. The workaround had to come from me.
+
+#### 2. Hallucinated or Incorrect API Details
+- **What Happened**: ChatGPT claimed `useTheme` or `useThemeContext` existed in `@radix-ui/themes`, but those were not valid exports.
+- **Impact**: Broke my build and led me to chase ghost APIs.
+- **Why It Matters**: The information was confidently wrong. I had to debug basic usage that should’ve just worked.
+
+#### 3. Over-Complicating Simple Tasks
+- **What Happened**: I wanted to reuse the working logic from `ThemePanel` for a dark mode toggle. ChatGPT instead proposed an entirely new context-based solution I didn’t want.
+- **Impact**: Delayed progress and forced me to undo unnecessary complexity.
+- **Why It Matters**: Sometimes the right answer is just to copy what works—not to reinvent.
+
+#### 4. Disregarding Instructions About Brevity
+- **What Happened**: I repeatedly asked ChatGPT to "just give a link" or "no explanations," but it still responded with excessive commentary.
+- **Impact**: Wasted bandwidth, broke UI formatting, and ignored my preferences.
+- **Why It Matters**: Respecting communication style is critical, especially when explicitly stated.
+
+#### 5. Loss of Context Over Time
+- **What Happened**: ChatGPT occasionally forgot prior steps—like that I was already using `<Theme>` and `ThemePanel` correctly—and repeated outdated advice.
+- **Impact**: Confusing and counterproductive guidance.
+- **Why It Matters**: Inconsistent memory leads to regression in iterative sessions.
+
+> These issues weren’t one-offs. They compound when building complex systems where consistency and precision matter.
+
+as you can probably tell from the spelling i no longer ask chatgpt to correct my spelling / wording as it will make itself look better in the process. so whenever you read something thats badly wordes / spelled like this sentence, its written by me unmodified.
+
+here is the real link to the [chatgpt interaction](https://chatgpt.com/share/688b4ffb-9650-8013-968c-acd6af36e847)
+
 ---
 
 ## License
