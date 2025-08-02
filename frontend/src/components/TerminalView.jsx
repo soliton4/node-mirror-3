@@ -52,6 +52,50 @@ const TerminalView = forwardRef(({ id }, ref) => {
       xterm.resize(buffer.size.cols, buffer.size.rows);
 
       xterm.write(buffer.buffer);
+
+      let modes = buffer.modes;
+      
+      // Reapply mouse tracking mode
+      let mouseSequence = '';
+      switch (modes.mouseTrackingMode) {
+        case 'x10':
+          mouseSequence = '\x1b[?9h'; // X10 mouse (button press only)
+          break;
+        case 'vt200':
+          mouseSequence = '\x1b[?1000h'; // VT200 mouse (press/release)
+          break;
+        case 'drag':
+          mouseSequence = '\x1b[?1002h'; // Button-event tracking (includes drags)
+          break;
+        case 'any':
+          mouseSequence = '\x1b[?1003h'; // Any-event tracking (all movements)
+          break;
+        // 'none' needs no action (default)
+      }
+      if (mouseSequence) xterm.write(mouseSequence);
+      
+      // Optionally reapply other modes (examples; map to their DECSET sequences)
+      if (modes.applicationKeypadMode) xterm.write('\x1b[?66h');
+      if (modes.bracketedPasteMode) xterm.write('\x1b[?2004h');
+      if (modes.sendFocusMode) xterm.write('\x1b[?1004h'); // Often paired with mouse for focus events
+
+      // Add encoding restoration
+      let encodingSequence = '';
+      switch (buffer.mouseEncoding.toLowerCase()) {
+        case 'utf8':
+          encodingSequence = '\x1b[?1005h'; // UTF-8 mouse encoding (rare/deprecated)
+          break;
+        case 'sgr':
+          encodingSequence = '\x1b[?1006h'; // SGR mouse encoding (common for vim/mc)
+          break;
+        case 'urxvt':
+          encodingSequence = '\x1b[?1015h'; // URXVT mouse encoding
+          break;
+        // 'default' needs no action
+      }
+      if (encodingSequence) xterm.write(encodingSequence);
+      
+      
     };
     loadBuffer();
 

@@ -6,7 +6,6 @@ const { Terminal } = pkg;
 
 import { SerializeAddon } from '@xterm/addon-serialize';
 
-
 const MAX_BUFFER_LINES = 5000;
 
 export function createTerminal() {
@@ -66,9 +65,23 @@ export function createTerminal() {
     
     getBuffer() {
       const serializedState = serializeAddon.serialize();
-    
+
+      // Capture modes (IModes interface)
+      const modes = {
+        mouseTrackingMode: headless.modes.mouseTrackingMode, // 'none' | 'x10' | 'vt200' | 'drag' | 'any'
+        // Optionally add others if needed for your apps (e.g., vim/tmux often use these)
+        applicationKeypadMode: headless.modes.applicationKeypadMode, // boolean
+        bracketedPasteMode: headless.modes.bracketedPasteMode, // boolean
+        sendFocusMode: headless.modes.sendFocusMode, // boolean (related to mouse focus events)
+        // Add more from IModes as relevant: insertMode, originMode, etc.
+      };
+
+      // Capture mouse encoding safely
+      const mouseEncoding = headless._core?.coreMouseService?._activeEncoding || 'default';
       return {
         size, 
+        modes,
+        mouseEncoding,
         buffer: serializedState
       };
     },
