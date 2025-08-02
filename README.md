@@ -329,6 +329,14 @@ as you can probably tell from the spelling i no longer ask chatgpt to correct my
 
 here is the real link to the [chatgpt interaction](https://chatgpt.com/share/688b4ffb-9650-8013-968c-acd6af36e847)
 
+
+## i made the terminal fully restorable
+
+when you reopen a terminal it used to show a blank black screen. i had the buffer information in a headless xterm, but it wasnt hooked up.
+chatgpt failed completely in giving me the correct advise [interaction link](https://chatgpt.com/share/688e3f01-64a8-8013-b5a3-b82aa5110446)
+but look who redeemed itself. its gorks time to shine. grok mentioned the serialization add on which pretty much solves the entire problem except the mouse state. but after some digging grok actually helped me solve the mouse state problem with some seriously deep insight. [read for yourself](https://x.com/i/grok/share/srBBBnAnIX65BcPVoUPgeoVjI)
+
+
 ---
 
 ## License
