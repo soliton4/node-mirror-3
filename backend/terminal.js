@@ -4,19 +4,27 @@ import EventEmitter from '../shared/EventEmitter.js'
 import pkg from '@xterm/headless';
 const { Terminal } = pkg;
 
+import { SerializeAddon } from '@xterm/addon-serialize';
+
 
 const MAX_BUFFER_LINES = 5000;
 
 export function createTerminal() {
   const shell = process.env.SHELL || 'bash';
+  
+  let size = {
+    rows: 24,
+    cols: 80
+  };
 
   const ptyProcess = pty.spawn(shell, [], {
     name: 'xterm-256color',
-    cols: 80,
-    rows: 24,
+    cols: size.cols,
+    rows: size.rows,
     cwd: process.cwd(),
     env: process.env,
   });
+
 
   const emitter = new EventEmitter();
 
@@ -29,10 +37,14 @@ export function createTerminal() {
   });
 
   const headless = new Terminal({
-    cols: 80,
-    rows: 24,
+    allowProposedApi: true,
+    cols: size.cols,
+    rows: size.rows,
     scrollback: MAX_BUFFER_LINES,
   });
+  const serializeAddon = new SerializeAddon();
+  headless.loadAddon(serializeAddon);
+
 
   const unsubscribe = emitter.on("data", (data)=>{
     headless.write(data);
@@ -43,33 +55,26 @@ export function createTerminal() {
       ptyProcess.write(data);
     },
     resize(cols, rows) {
-      headless.resize(cols, rows);
-      ptyProcess.resize(cols, rows);
+      size.cols = cols;
+      size.rows = rows;
+      headless.resize(size.cols, size.rows);
+      ptyProcess.resize(size.cols, size.rows);
     },
     on(...args) {
       return emitter.on(...args);
     },
     
     getBuffer() {
-      const buffer = headless.buffer.active;
-      const lines = [];
-
-      for (let i = 0; i < buffer.length; i++) {
-        const line = buffer.getLine(i);
-        if (!line) continue;
-
-        const text = line.translateToString(true); // true = trim trailing whitespace
-        lines.push(text);
-      }
-
+      const serializedState = serializeAddon.serialize();
+    
       return {
-        lines,
-        cursor: {
-          x: buffer.cursorX,
-          y: buffer.cursorY,
-        },
+        size, 
+        buffer: serializedState
       };
     },
+
+
+
     
     close() {
       unsubscribe();

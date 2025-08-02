@@ -26,7 +26,6 @@ function construct(id) {
   
     if (rows !== lastApplied.rows || cols !== lastApplied.cols) {
       instance.emit("resize", cols, rows); // let clients adjust
-      console.log("resize:");
       console.log({rows, cols});
       terminalObj.resize(cols, rows);
       lastApplied = { rows, cols };
@@ -52,6 +51,11 @@ function construct(id) {
     async getViewer(){
       viewcounter += 1;
       return viewcounter;
+    },
+    async getBuffer(){
+      if (terminalObj) {
+        return terminalObj.getBuffer()
+      }
     },
     on(eventName, callback) {
       return emitter.on(eventName, callback);
@@ -85,6 +89,7 @@ function construct(id) {
 factory.register(OBJECT_TYPE, construct, [
   { method: 'input',     sides: { server: true } },
   { method: 'getViewer', sides: { server: true } },
+  { method: 'getBuffer', sides: { server: true } },
   {
     "event": "*",
     "profile": "sync"

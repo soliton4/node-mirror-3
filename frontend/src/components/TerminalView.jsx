@@ -16,24 +16,20 @@ const TerminalView = forwardRef(({ id }, ref) => {
 
   useImperativeHandle(ref, () => ({
     focus: () => {
-      console.log("focus()");
       if (xtermRef){
           if (xtermRef.current){
-            console.log("current");
             if (xtermRef.current.focus){
-              console.log("current focus");
               xtermRef.current.focus();
             }
           }
       }
-      xtermRef.current?.focus();
     }
   }), []);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const xterm = new Terminal();
+    const xterm = new Terminal({scrollback: 10000});
     const fitAddon = new FitAddon();
     const terminalInstance = ServerTerminalInstance(id);
     terminalInstanceRef.current = terminalInstance;
@@ -44,6 +40,20 @@ const TerminalView = forwardRef(({ id }, ref) => {
     xterm.loadAddon(fitAddon);
     xterm.open(containerRef.current);
 
+    const loadBuffer = async ()=>{
+      const buffer = await terminalInstance.getBuffer();
+      if (!buffer || !xtermRef.current) return;
+
+      const xterm = xtermRef.current;
+
+    
+      // Reset terminal before writing
+      xterm.reset();
+      xterm.resize(buffer.size.cols, buffer.size.rows);
+
+      xterm.write(buffer.buffer);
+    };
+    loadBuffer();
 
 
     const handleResize = () => {
