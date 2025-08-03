@@ -6,6 +6,8 @@ import path from 'path';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, relative, sep, posix } from 'node:path';
 
+import tailwindcss from '@tailwindcss/vite'
+
 function rewriteBackendToFake() {
   const configDir = dirname(fileURLToPath(import.meta.url));       // frontend/
   const projectRoot = join(configDir, '..');                       // monorepo root
@@ -50,7 +52,7 @@ function rewriteBackendToFake() {
 
 
 export default defineConfig({
-  plugins: [react(), rewriteBackendToFake()],
+  plugins: [react(), rewriteBackendToFake(), tailwindcss()],
   build: {
     outDir: 'dist',
   },

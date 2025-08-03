@@ -1,5 +1,7 @@
 /* global.css */
 
+@import "tailwindcss";
+
 :root {
 
   
@@ -103,7 +105,7 @@ body {
 }
 
 .split-resizer:hover {
-  background-color: var(--bg-3);;
+  background-color: var(--bg-3);
 }
 
 
