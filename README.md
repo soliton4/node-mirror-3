@@ -337,6 +337,17 @@ chatgpt failed completely in giving me the correct advise [interaction link](htt
 but look who redeemed itself. its gorks time to shine. grok mentioned the serialization add on which pretty much solves the entire problem except the mouse state. but after some digging grok actually helped me solve the mouse state problem with some seriously deep insight. [read for yourself](https://x.com/i/grok/share/srBBBnAnIX65BcPVoUPgeoVjI)
 
 
+## an interesting session
+
+this time i wanted to focus on bringing ai integration to nodemirror. the biggest open question for myself was what frontend to use. i will probably have to write something from scratch someday but i just wanted to start out with something usable so i could focus on the backend.
+long storry short i got a nice frontend but it was quite the journey - also no backend yet. this session showed the strength and weaknesses of different ai models. openai recommended existing libs that were really hard to integrate or just palin missing the criteria i was looking for.
+nevertheless i explored some deeper and ended up having to integrated tailwind. so nodemirror has tailwind support now buhu.
+in an act of disapointment i turned to grok. and wow grok is really good about recommending libs / components for your project. this was the 2nd time that grok outperformed openai in this aspect.
+so i continued to work with grok and integrated **assistant-ui**
+and the more and more i worked with grok the less helpful its answers became, up to a point where it just groked out - yes thats the name for it, deal with it - and failed to respond to even basic queries.
+i managed to finish the integration but not with but despite the help of grok. in the end it was a disaster.
+have a read for yourself [grok](https://x.com/i/grok/share/w3Uv4kZcT4FVNVbG9riwwmnvZ) [chatgpt](https://chatgpt.com/share/6890f49c-5560-8013-b532-510cd8c6c12b)
+
 ---
 
 ## License

@@ -17,20 +17,29 @@ import {
 } from 'react-resizable-panels';
 import { useThemeContext } from '@radix-ui/themes';
 
+// New imports for assistant-ui integration
+import { AssistantRuntimeProvider } from '@assistant-ui/react';
+import { useLocalRuntime } from '@assistant-ui/react';
+import { Thread } from '@/components/assistant-ui/thread';  // Using @/ alias for src/components/...
+
+// Custom adapter for your backend (define this in a separate file, e.g., src/lib/my-model-adapter.js)
+import { MyModelAdapter } from '@/lib/my-model-adapter';
 
 const App = () => {
   const tabApi = useRef({ open: () => {} });
 
+  // Move this hook to the top—must be unconditional to avoid hook count mismatches
+  const runtime = useLocalRuntime(MyModelAdapter);
 
   /* ---------- Global config ---------- */
   const { state, updateConfig } = useGlobal();
   
   const { appearance } = useThemeContext();
 
-
   /* ---------- WebSocket auth ---------- */
   const { authenticated, status } = useContext(WebSocketContext);
 
+  const showAiPanel = false;
 
   if (status === 'disconnected') {
     return <p>Disconnected from server...</p>;
@@ -40,28 +49,31 @@ const App = () => {
     return <PasswordPrompt />;
   }
 
+  
+
   return (
     <TabContext.Provider value={tabApi.current}>
-
-
       <PanelGroup direction="horizontal" style={{ flex: 1, display: 'flex', minHeight: 0 }}>
         <Panel defaultSize={10}>
           <Navigation />
-         </Panel>
-         <PanelResizeHandle />
-         <Panel minSize={10}>
-           <TabManager />
-         </Panel>
+        </Panel>
+        <PanelResizeHandle />
+        <Panel minSize={10}>
+          <TabManager />
+        </Panel>
+  
+        {showAiPanel && <>
+          <PanelResizeHandle />
+          <Panel defaultSize={25} minSize={20}>
+            {/* Wrap Thread in the provider for runtime/state management */}
+            <AssistantRuntimeProvider runtime={runtime}>
+              <Thread />
+            </AssistantRuntimeProvider>
+          </Panel>
+        </>}
       </PanelGroup>
-      
     </TabContext.Provider>
   );
 };
 
-
-
 export default App;
-
-
-
-
