@@ -9,6 +9,7 @@ import TabManager from './components/TabManager';
 import { TabContext } from './components/TabContext';
 import { useGlobal } from './GlobalContext';
 import { Tabs, Flex } from '@radix-ui/themes';
+import { useConfig } from './ConfigContext';
 
 import {
   Panel,
@@ -39,7 +40,9 @@ const App = () => {
   /* ---------- WebSocket auth ---------- */
   const { authenticated, status } = useContext(WebSocketContext);
 
-  const showAiPanel = false;
+  const { config } = useConfig();
+
+  const showAiPanel = true;
 
   if (status === 'disconnected') {
     return <p>Disconnected from server...</p>;
@@ -62,7 +65,7 @@ const App = () => {
           <TabManager />
         </Panel>
   
-        {showAiPanel && <>
+        {config.aiVisible && <>
           <PanelResizeHandle />
           <Panel defaultSize={25} minSize={20}>
             {/* Wrap Thread in the provider for runtime/state management */}

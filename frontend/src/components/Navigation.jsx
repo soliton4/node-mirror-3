@@ -20,6 +20,10 @@ const Navigation = ({  }) => {
     updateConfig({ appearance: next });
   };
 
+  const toggleAi = () => {
+    const next = config.aiVisible === true ? false : true;
+    updateConfig({ aiVisible: next });
+  };
 
 
   
@@ -28,6 +32,9 @@ const Navigation = ({  }) => {
       <Flex gap="2" p="2" align="center" justify="between">
         <Button onClick={toggleDarkMode}>
           {config.appearance === 'dark' ? '🌙 Dark' : '🌞 Light'}
+        </Button>
+        <Button onClick={toggleAi}>
+          {config.aiVisible === true ? 'hide Ai' : 'show Ai'}
         </Button>
       </Flex>
 

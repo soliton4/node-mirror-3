@@ -152,6 +152,17 @@ cd frontend
 npm run dev
 ```
 
+## Ai integration
+
+There is a assistant frontend you can connect to the openai api. 100% optional.
+
+To use it pass the openai api key in the commandline
+
+```sh
+npm start -- --password secret123 --openaiapikey <secret_key>
+```
+
+
 ## 🧱 UI Layout Structure (Frontend)
 
 The frontend layout uses a **Vite + React + CodeMirror 6** stack, organized like this:
@@ -347,6 +358,13 @@ so i continued to work with grok and integrated **assistant-ui**
 and the more and more i worked with grok the less helpful its answers became, up to a point where it just groked out - yes thats the name for it, deal with it - and failed to respond to even basic queries.
 i managed to finish the integration but not with but despite the help of grok. in the end it was a disaster.
 have a read for yourself [grok](https://x.com/i/grok/share/w3Uv4kZcT4FVNVbG9riwwmnvZ) [chatgpt](https://chatgpt.com/share/6890f49c-5560-8013-b532-510cd8c6c12b)
+
+## integrating ai is my next immediate goal
+
+gpt 5 wrote me an entire node module that was almost usable out of the box. i just had to adjust the input types from "text" to "input_text" / "output_text" and reorganize the output json.
+all in all a short session and i want to switch to use ai inside node-mirror as soon as possible. 
+i did most of the remaining work without ai assistance. added a button to turn the ui on / off and made the api key configurable. pretty bare bone but functional.
+[interaction](https://chatgpt.com/share/689a4238-d258-8013-af14-de15a7170833)
 
 ---
 

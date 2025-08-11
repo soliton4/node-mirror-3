@@ -20,4 +20,11 @@ export const configSchema = {
     readOnly: true,
     description: 'Backend HTTP port',
   },
+  openaiapikey: {
+    default: "",
+    cliFlag: '--openaiapikey',
+    frontendVisible: false,
+    readOnly: true,
+    description: 'api key for openai',
+  },
 };
