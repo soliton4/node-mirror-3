@@ -340,20 +340,12 @@ class Factory {
   }
   async waitForReply(connection, callId) {
     return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        if (this.pendingReplies.has(callId)) {
-          this.pendingReplies.delete(callId);
-          reject(new Error(`Timeout waiting for reply to callId ${callId}`));
-        }
-      }, 10000);
 
       this.pendingReplies.set(callId, {
         resolve: (result) => {
-          clearTimeout(timeout);
           resolve(result);
         },
         reject: (err) => {
-          clearTimeout(timeout);
           reject(err);
         }
       });
