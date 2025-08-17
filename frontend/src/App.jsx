@@ -27,7 +27,14 @@ import { Thread } from '@/components/assistant-ui/thread';  // Using @/ alias fo
 import { MyModelAdapter } from '@/lib/my-model-adapter';
 
 const App = () => {
-  const tabApi = useRef({ open: () => {} });
+  const tabApi = useRef({ open: () => {}, getContext: () => {} });
+
+  MyModelAdapter.getContext = () => {
+    if (tabApi && tabApi.current){
+      
+      return tabApi.current.getContext();
+    }
+  };
 
   // Move this hook to the top—must be unconditional to avoid hook count mismatches
   const runtime = useLocalRuntime(MyModelAdapter);
@@ -41,8 +48,6 @@ const App = () => {
   const { authenticated, status } = useContext(WebSocketContext);
 
   const { config } = useConfig();
-
-  const showAiPanel = true;
 
   if (status === 'disconnected') {
     return <p>Disconnected from server...</p>;

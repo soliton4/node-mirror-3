@@ -10,15 +10,16 @@ const aimsg = AiMessage("default");
 
 export const MyModelAdapter = {
   async *run({ messages, abortSignal }) {
+    console.log("messages:");
     console.log(messages);
-    // Ignore the input 'messages' and 'abortSignal' for now (dummy version)
-    
-    // Yield a simple fixed response as an object with content array
-    /*yield {
-      content: [
-        { type: 'text', text: 'This is a dummy AI response. Hello from the fixed adapter!' }
-      ]
-    };*/
+    if (this.getContext){
+      let additionalContext = this.getContext();
+      if (additionalContext){
+        const last = messages[messages.length - 1];
+        last.content = last.content.concat(additionalContext);
+        console.log(messages);
+      }
+    }
     let result = await aimsg.run(messages);
     console.log(result);
     yield { content: [ { type: 'text', text: result.raw.output_text } ] };

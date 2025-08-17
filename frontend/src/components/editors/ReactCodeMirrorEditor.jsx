@@ -60,6 +60,7 @@ const ReactCodeMirrorEditor = forwardRef(({ id, setToolbarExtras }, ref) => {
   
     const currentText = view.state.doc.toString();
     if (newText === currentText) return;
+    console.log("new content");
   
     // Capture scroll position
     const scrollDOM = view.scrollDOM;
@@ -153,6 +154,34 @@ const ReactCodeMirrorEditor = forwardRef(({ id, setToolbarExtras }, ref) => {
       if (content != null) {
         updateEditor(content);
       }
+    },
+    focus() {
+      let view = viewRef.current;
+      if (!view){
+        return;
+      };
+      view.focus();
+    },
+    getContext() {
+      console.log("calling getcontext codemirror");
+      const view = viewRef.current;
+      if (!view) return;
+
+      function toBase64(str) {
+        return btoa(unescape(encodeURIComponent(str)));
+      }
+  
+      const currentText = view.state.doc.toString();
+
+      /*
+              { "type": "input_text", "text": "Cursor: line 42, col 5" },
+        { "type": "input_text", "text": "Selection: lines 40–45" },
+        { "type": "input_text", "text": "Visible: 30–70" },
+      */
+      return [
+        { "type": "text", "text": "Filename: " + id },
+        { "type": "text", "text": "Code:\n```\n" + currentText + "\n```" }
+      ];
     }
   }));
 

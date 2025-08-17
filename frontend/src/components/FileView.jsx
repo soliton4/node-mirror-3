@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import File from '../../../shared/objects/File';
 import ReactCodeMirrorEditor from './editors/ReactCodeMirrorEditor';
 //import CodeMirrorEditor from './editors/CodeMirrorEditor';
@@ -8,7 +8,21 @@ import { useConfig } from '../ConfigContext';
 
 import { Save, RefreshCw } from 'lucide-react';
 
-export default function FileView({ id, statusChange }) {
+const FileView = forwardRef(({ id, statusChange }, ref) => {
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      if (reactCodeMirrorEditorRef && reactCodeMirrorEditorRef.current){
+        reactCodeMirrorEditorRef.current.focus();
+      }
+    },
+    getContext: () => {
+      console.log("calling getcontext");
+      if (reactCodeMirrorEditorRef && reactCodeMirrorEditorRef.current){
+        return reactCodeMirrorEditorRef.current.getContext();
+      };
+    }
+  }), []);
 
   const { config } = useConfig();
   const darkMode = config.appearance === 'dark';
@@ -134,6 +148,6 @@ export default function FileView({ id, statusChange }) {
       </div>
     </div>
   );
-}
+});
 
-
+export default FileView;

@@ -37,6 +37,9 @@ function toResponsesInput(messages) {
         if (c.type === "text"){
           c.type = "input_text";
         }
+        if (c.type === "file"){
+          c.type = "input_file";
+        }
       }else if(role === 'assistant'){
         if (c.type === "text"){
           c.type = "output_text";

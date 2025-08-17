@@ -28,8 +28,6 @@ const TabManager = () => {
 
   const statusChange = (id, status) => {
     const key = `file:${id}`;
-    console.log("status: " + key);
-    console.log(status);
     setOpenTabs((prev) =>
       prev.map((tab) =>
         tab.key === key ? { ...tab, status: status } : tab
@@ -51,7 +49,15 @@ const TabManager = () => {
     
       setActiveTab(key);
     };
-  }, [tabApi]);
+
+    tabApi.getContext = () => {
+      console.log("getContext");
+      const ref = tabRefs.current[activeTab];
+      console.log(ref);
+      return ref?.current?.getContext?.();
+    };
+
+  }, [tabApi, activeTab]);
 
   const closeTab = (key) => {
     setOpenTabs((prev) => prev.filter((t) => t.key !== key));
