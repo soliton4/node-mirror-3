@@ -366,6 +366,15 @@ all in all a short session and i want to switch to use ai inside node-mirror as 
 i did most of the remaining work without ai assistance. added a button to turn the ui on / off and made the api key configurable. pretty bare bone but functional.
 [interaction](https://chatgpt.com/share/689a4238-d258-8013-af14-de15a7170833)
 
+## file context gets more confusing the more i study the api
+
+turns out its way more straight forward as chatgpt recommends not using the content type "file" but instead just use plain text to provide file information
+well "explain this code" works in the most rudimentary way. the chat message about the file content gets injected into the thread
+[chatgpt](https://chatgpt.com/share/68a3bd74-33dc-8013-a49e-6a5d3158612c)
+
+i am not posting as much interactions right now as i am doing interactions inside node-mirror. i have to add a log soon so i can reference them here.
+
+
 ---
 
 ## License
