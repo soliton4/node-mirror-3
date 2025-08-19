@@ -27,4 +27,11 @@ export const configSchema = {
     readOnly: true,
     description: 'api key for openai',
   },
+  digitaloceanmodelkey: {
+    default: "",
+    cliFlag: '--digitaloceanmodelkey',
+    frontendVisible: false,
+    readOnly: true,
+    description: 'api key for digitalocean serverless inference',
+  },
 };

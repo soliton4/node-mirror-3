@@ -4,6 +4,7 @@ import factory from '../Factory.js';
 import { isServer } from '../../backend/side.js'
 import EventEmitter from '../EventEmitter.js'
 import { chat } from '../../backend/ai/openai.js'
+import { chat as digitalOceanChat } from '../../backend/ai/digitalocean.js'
 
       
 const OBJECT_TYPE = 'aimessage';

@@ -22,7 +22,7 @@ export const MyModelAdapter = {
     }
     let result = await aimsg.run(messages);
     console.log(result);
-    yield { content: [ { type: 'text', text: result.raw.output_text } ] };
+    yield { content: [ { type: 'text', text: result.text } ] };
     
     // You can add more yields if you want to simulate multiple parts or streaming,
     // but one is enough to satisfy the interface and show something in the chat.
