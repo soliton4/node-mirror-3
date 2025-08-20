@@ -9,7 +9,7 @@ import Dir from '../../../shared/objects/Dir2.js';
 import '../file/file.css';
 
 const FileNode = ({ name, id, isDirectory, level, scrollContainerRef }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(level === 0 ? true : false);
   const [children, setChildren] = useState([]);
 
   const nodeRef = useRef(null);

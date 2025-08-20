@@ -13,8 +13,6 @@ export async function chat({
 } = {}) {
   console.log("calling chat");
   console.log(messages);
-  //messages = [{"role": "user", "content": "What is the capital of France?"}];
-
 
   const headers = {
     "Authorization": `Bearer ${digitaloceanmodelkey}`,

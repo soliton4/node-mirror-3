@@ -16,7 +16,8 @@ export const WebSocketProvider = ({ children }) => {
   const wsRef = useRef(null);
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://${window.location.host}`);
+    const scheme = window.location.protocol === "https:" ? "wss" : "ws";
+    const socket = new WebSocket(`${scheme}://${window.location.host}`);
 
     socket.onopen = () => {
       setStatus('connected');
