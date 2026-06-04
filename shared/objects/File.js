@@ -8,8 +8,6 @@ const OBJECT_TYPE = 'file';
 
 const dirtyFiles = new Map(); // keep dirty files alive so they dont lose their content
 
-  
-
 function construct(id) {
   let _buffer = null;         // unsaved edits
   let _lastKnownContent = null;

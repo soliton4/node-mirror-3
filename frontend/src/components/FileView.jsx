@@ -3,6 +3,9 @@ import File from '../../../shared/objects/File';
 import ReactCodeMirrorEditor from './editors/ReactCodeMirrorEditor';
 //import CodeMirrorEditor from './editors/CodeMirrorEditor';
 import HexEditor from './editors/HexEditor';
+import IVEditor from '../IV/IVEditor';
+
+
 import { useGlobal } from '../GlobalContext';
 import { useConfig } from '../ConfigContext';
 
@@ -115,6 +118,7 @@ const FileView = forwardRef(({ id, statusChange }, ref) => {
         <select style={selectStyle} value={mode} onChange={e => setMode(e.target.value)}>
           <option value="react-codemirror">ReactCodeMirror</option>
           <option value="hex">Hex editor</option>
+          <option value="4">4</option>
         </select>
 
         <button onClick={saveFile} title="Save" style={iconButtonStyle}>
@@ -144,6 +148,9 @@ const FileView = forwardRef(({ id, statusChange }, ref) => {
         )}
         {mode === 'hex' && (
           <HexEditor />
+        )}
+        {mode === '4' && (
+          <IVEditor />
         )}
       </div>
     </div>
